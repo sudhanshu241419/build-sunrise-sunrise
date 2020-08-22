@@ -7,7 +7,6 @@ import {
     ScrollView,
     StatusBar,
     StyleSheet,
-    ActivityIndicator,
     Alert
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
@@ -20,6 +19,7 @@ import { Picker } from '@react-native-community/picker';
 import { connect } from 'react-redux';
 import { checkLogin } from '../../actionCreator/login/actions';
 import { AuthContext } from '../../components/context'
+import ActivityIndicator from 'react-native-loading-spinner-overlay'
 
 const RegisterScreen = ({ navigation }) => {
     const [data, setData] = React.useState({
@@ -261,7 +261,7 @@ const RegisterScreen = ({ navigation }) => {
                         </View>
 
                         <View style={{ position: 'absolute', top: "50%", right: 0, left: 0, zIndex: 1 }}>
-                            <ActivityIndicator animating={showLoader} size="large" color="#999" />
+                            <ActivityIndicator visible={showLoader} color="#6379FF" />
                         </View>
 
                         <ScrollView>

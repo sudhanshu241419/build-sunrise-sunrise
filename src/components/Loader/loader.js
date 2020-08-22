@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View } from 'react-native';
+import ActivityIndicator from 'react-native-loading-spinner-overlay'
 export const loaderRef = React.createRef();
 
 export function showLoader() {

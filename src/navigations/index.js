@@ -1,14 +1,14 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import LandingScreen from '../scenes/landing';
+import LandingScreen from '../scenes/landing/authLanding';
 import AddReferrals from '../scenes/referrals/AddReferrals'
 import ReferralHistoryScreen from '../scenes/referrals/History'
 import ShopScreen from '../scenes/shop/Shop'
 import { Image, View, Text, StyleSheet, SafeAreaView } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import { Avatar, Title, Caption, Paragraph, Drawer, TouchableRipple, Switch } from 'react-native-paper'
-import styles from '../scenes/login/styles';
+import { Avatar, Title, Caption, Drawer} from 'react-native-paper'
+import styles from './styles';
 import DashboardScreen from '../scenes/dashboard';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient'
@@ -281,249 +281,249 @@ const DrawerContent = (props) => {
     const { signOut, toggleTheme } = React.useContext(AuthContext);  
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#1F2865', zIndex: 1 }}>
+        <SafeAreaView style={[styles.safeArea,styles.flex]}>
             <DrawerContentScrollView {...props}>
-                <View style={styles.drawerContent}>
+                <View style={styles.flex}>
                     <View style={styles.userInfoSection}>
-                        <View style={{ alignItems: 'center', marginTop: 60 }}>
+                        <View style={styles.avtar}>
                             <Avatar.Image source={require('../assets/jp.png')}
                                 size={100}
                             />
                         </View>
                         <View style={{ alignItems: 'center' }}>
-                            <Title style={{ fontSize: 14, fontFamily: 'Segoe UI', color: '#fff', marginBottom: 0 }}>
+                            <Title style={[styles.title,styles.font14]}>
                                 {props.firstName} {props.lastName}
                             </Title>
-                            <Title style={{ fontSize: 18, fontFamily: 'Segoe UI', color: '#fff' }}>VIP Manager</Title>
-                            <Caption style={{ fontSize: 14, fontFamily: 'Segoe UI', color: '#fff', marginBottom: 30 }}>{props.email}</Caption>
+                            <Title style={[styles.title,styles.font18]}>VIP Manager</Title>
+                            <Caption style={[styles.title,styles.font14,{marginBottom: 30 }]}>{props.email}</Caption>
                         </View>
                     </View>
                 </View>
                 <Drawer.Section style={styles.drawerSection}>
-                    <View style={{ flexDirection: 'row', marginTop: 0, width: "90%" }}>
-                        <View style={{ flexDirection: 'row', width: "100%" }}>
+                    <View style={[styles.flexdirection,styles.width90]}>
+                        <View style={[styles.flexdirection,styles.width100]}>
                             <DrawerItem
                                 label="Home"
                                 onPress={() => { props.navigation.navigate('Home') }}
                                 labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={style.darkBlue}
+                                style={styles.darkBlue}
                             />
                         </View>
-                        <View style={{ flexDirection: 'row', paddingTop: 16 }}>
+                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
                             <Ionicons name="send-sharp" size={14} color="#ffffff" />
                         </View>
                     </View>
                   
-                    <View style={{ flexDirection: 'row', marginTop: 0, width: "90%" }}>
-                        <View style={{ flexDirection: 'row', width: "100%" }}>
+                    <View style={[styles.flexdirection,styles.width90]}>
+                        <View style={[styles.flexdirection,styles.width100]}>
                             <DrawerItem
                                 label="Add Referrals"
                                 onPress={() => { props.navigation.navigate('AddReferrals') }}
                                 labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={style.lightBlue}
+                                style={styles.lightBlue}
                             />
                         </View>
-                        <View style={{ flexDirection: 'row', paddingTop: 16 }}>
+                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
                             <Ionicons name="send-sharp" size={14} color="#ffffff" />
                         </View>
                     </View>
-                    <View style={{ flexDirection: 'row', marginTop: 0, width: "90%" }}>
-                        <View style={{ flexDirection: 'row', width: "100%" }}>
+                    <View style={[styles.flexdirection,styles.width90]}>
+                        <View style={[styles.flexdirection,styles.width100]}>
                             <DrawerItem
                                 label="Referrals History"
                                 onPress={() => { props.navigation.navigate('ReferralHistory') }}
                                 labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={style.darkBlue}
+                                style={styles.darkBlue}
                             />
                         </View>
-                        <View style={{ flexDirection: 'row', paddingTop: 16 }}>
+                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
                             <Ionicons name="send-sharp" size={14} color="#ffffff" />
                         </View>
                     </View>
-                    <View style={{ flexDirection: 'row', marginTop: 0, width: "90%" }}>
-                        <View style={{ flexDirection: 'row', width: "100%" }}>
+                    <View style={[styles.flexdirection,styles.width90]}>
+                        <View style={[styles.flexdirection,styles.width100]}>
                             <DrawerItem
                                 label="Soap Now"
                                 onPress={() => { props.navigation.navigate('Shop') }}
                                 labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={style.lightBlue}
+                                style={styles.lightBlue}
                             />
                         </View>
-                        <View style={{ flexDirection: 'row', paddingTop: 16 }}>
+                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
                             <Ionicons name="send-sharp" size={14} color="#ffffff" />
                         </View>
                     </View>
-                    <View style={{ flexDirection: 'row', marginTop: 0, width: "90%" }}>
-                        <View style={{ flexDirection: 'row', width: "100%" }}>
+                    <View style={[styles.flexdirection,styles.width90]}>
+                        <View style={[styles.flexdirection,styles.width100]}>
                             <DrawerItem
                                 label="Rate Your Purchase"
                                 onPress={() => { props.navigation.navigate('RateYourPurchase') }}
                                 labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={style.darkBlue}
+                                style={styles.darkBlue}
                             />
                         </View>
-                        <View style={{ flexDirection: 'row', paddingTop: 16 }}>
+                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
                             <Ionicons name="send-sharp" size={14} color="#ffffff" />
                         </View>
                     </View>
 
-                    <View style={{ flexDirection: 'row', marginTop: 0, width: "90%" }}>
-                        <View style={{ flexDirection: 'row', width: "100%" }}>
+                    <View style={[styles.flexdirection,styles.width90]}>
+                        <View style={[styles.flexdirection,styles.width100]}>
                             <DrawerItem
                                 label="Write a Review"
                                 onPress={() => { }}
                                 labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={style.lightBlue}
+                                style={styles.lightBlue}
                             />
                         </View>
-                        <View style={{ flexDirection: 'row', paddingTop: 16 }}>
+                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
                             <Ionicons name="send-sharp" size={14} color="#ffffff" />
                         </View>
                     </View>
-                    <View style={{ flexDirection: 'row', marginTop: 0, width: "90%" }}>
-                        <View style={{ flexDirection: 'row', width: "100%" }}>
+                    <View style={[styles.flexdirection,styles.width90]}>
+                        <View style={[styles.flexdirection,styles.width100]}>
                             <DrawerItem
                                 label="Share"
                                 onPress={() => { }}
                                 labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={style.darkBlue}
+                                style={styles.darkBlue}
                             />
                         </View>
-                        <View style={{ flexDirection: 'row', paddingTop: 16 }}>
+                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
                             <Ionicons name="send-sharp" size={14} color="#ffffff" />
                         </View>
                     </View>
 
-                    <View style={{ flexDirection: 'row', marginTop: 0, width: "90%" }}>
-                        <View style={{ flexDirection: 'row', width: "100%" }}>
+                    <View style={[styles.flexdirection,styles.width90]}>
+                        <View style={[styles.flexdirection,styles.width100]}>
                             <DrawerItem
                                 label="Your E-Store"
                                 onPress={() => { }}
                                 labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={style.lightBlue}
+                                style={styles.lightBlue}
                             />
                         </View>
-                        <View style={{ flexDirection: 'row', paddingTop: 16 }}>
+                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
                             <Ionicons name="send-sharp" size={14} color="#ffffff" />
                         </View>
                     </View>
-                    <View style={{ flexDirection: 'row', marginTop: 0, width: "90%" }}>
-                        <View style={{ flexDirection: 'row', width: "100%" }}>
+                    <View style={[styles.flexdirection,styles.width90]}>
+                        <View style={[styles.flexdirection,styles.width100]}>
                             <DrawerItem
                                 label="Your E-Business Card"
                                 onPress={() => { props.navigation.navigate('EBusinessCard') }}
                                 labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={style.darkBlue}
+                                style={styles.darkBlue}
                             />
                         </View>
-                        <View style={{ flexDirection: 'row', paddingTop: 16 }}>
+                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
                             <Ionicons name="send-sharp" size={14} color="#ffffff" />
                         </View>
                     </View>
 
-                    <View style={{ flexDirection: 'row', marginTop: 0, width: "90%" }}>
-                        <View style={{ flexDirection: 'row', width: "100%" }}>
+                    <View style={[styles.flexdirection,styles.width90]}>
+                        <View style={[styles.flexdirection,styles.width100]}>
                             <DrawerItem
                                 label="Add Remove Business Listing"
                                 onPress={() => { props.navigation.navigate('AddBusiness') }}
                                 labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={style.lightBlue}
+                                style={styles.lightBlue}
                             />
                         </View>
-                        <View style={{ flexDirection: 'row', paddingTop: 16 }}>
+                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
                             <Ionicons name="send-sharp" size={14} color="#ffffff" />
                         </View>
                     </View>
-                    <View style={{ flexDirection: 'row', marginTop: 0, width: "90%" }}>
-                        <View style={{ flexDirection: 'row', width: "100%" }}>
+                    <View style={[styles.flexdirection,styles.width90]}>
+                        <View style={[styles.flexdirection,styles.width100]}>
                             <DrawerItem
                                 label="Referrals History"
                                 onPress={() => { }}
                                 labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={style.darkBlue}
+                                style={styles.darkBlue}
                             />
                         </View>
-                        <View style={{ flexDirection: 'row', paddingTop: 16 }}>
+                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
                             <Ionicons name="send-sharp" size={14} color="#ffffff" />
                         </View>
                     </View>
 
-                    <View style={{ flexDirection: 'row', marginTop: 0, width: "90%" }}>
-                        <View style={{ flexDirection: 'row', width: "100%" }}>
+                    <View style={[styles.flexdirection,styles.width90]}>
+                        <View style={[styles.flexdirection,styles.width100]}>
                             <DrawerItem
                                 label="How App Works"
                                 onPress={() => { }}
                                 labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={style.lightBlue}
+                                style={styles.lightBlue}
                             />
                         </View>
-                        <View style={{ flexDirection: 'row', paddingTop: 16 }}>
+                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
                             <Ionicons name="send-sharp" size={14} color="#ffffff" />
                         </View>
                     </View>
-                    <View style={{ flexDirection: 'row', marginTop: 0, width: "90%" }}>
-                        <View style={{ flexDirection: 'row', width: "100%" }}>
+                    <View style={[styles.flexdirection,styles.width90]}>
+                        <View style={[styles.flexdirection,styles.width100]}>
                             <DrawerItem
                                 label="Contact Support"
                                 onPress={() => { }}
                                 labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={style.darkBlue}
+                                style={styles.darkBlue}
                             />
                         </View>
-                        <View style={{ flexDirection: 'row', paddingTop: 16 }}>
+                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
                             <Ionicons name="send-sharp" size={14} color="#ffffff" />
                         </View>
                     </View>
-                    <View style={{ flexDirection: 'row', marginTop: 0, width: "90%" }}>
-                        <View style={{ flexDirection: 'row', width: "100%" }}>
+                    <View style={[styles.flexdirection,styles.width90]}>
+                        <View style={[styles.flexdirection,styles.width100]}>
                             <DrawerItem
                                 label="Privacy Policy"
                                 onPress={() => { }}
                                 labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={style.lightBlue}
+                                style={styles.lightBlue}
                             />
                         </View>
-                        <View style={{ flexDirection: 'row', paddingTop: 16 }}>
+                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
                             <Ionicons name="send-sharp" size={14} color="#ffffff" />
                         </View>
                     </View>
-                    <View style={{ flexDirection: 'row', marginTop: 0, width: "90%" }}>
-                        <View style={{ flexDirection: 'row', width: "100%" }}>
+                    <View style={[styles.flexdirection,styles.width90]}>
+                        <View style={[styles.flexdirection,styles.width100]}>
                             <DrawerItem
                                 label="Dashboard"
                                 onPress={() => { props.navigation.navigate('Dashboard') }}
                                 labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={style.darkBlue}
+                                style={styles.darkBlue}
                             />
                         </View>
-                        <View style={{ flexDirection: 'row', paddingTop: 16 }}>
+                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
                             <Ionicons name="send-sharp" size={14} color="#ffffff" />
                         </View>
                     </View>
-                    <View style={{ flexDirection: 'row', marginTop: 0, width: "90%" }}>
-                        <View style={{ flexDirection: 'row', width: "100%" }}>
+                    <View style={[styles.flexdirection,styles.width90]}>
+                        <View style={[styles.flexdirection,styles.width100]}>
                             <DrawerItem
                                 label="My Customer"
                                 onPress={() => { props.navigation.navigate('MyCustomer') }}
                                 labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={style.lightBlue}
+                                style={styles.lightBlue}
                             />
                         </View>
-                        <View style={{ flexDirection: 'row', paddingTop: 16 }}>
+                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
                             <Ionicons name="send-sharp" size={14} color="#ffffff" />
                         </View>
                     </View>
 
-                    <View style={{ flexDirection: 'row', marginTop: 0, width: "90%" }}>
-                        <View style={{ flexDirection: 'row', width: "100%" }}>
+                    <View style={[styles.flexdirection,styles.width90]}>
+                        <View style={[styles.flexdirection,styles.width100]}>
                             <DrawerItem
                                 label="Sign Out"
                                 onPress={() => { signOut() }}
                                 labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={style.darkBlue}
+                                style={styles.darkBlue}
                             />
                         </View>
-                        <View style={{ flexDirection: 'row', paddingTop: 16 }}>
+                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
                             <Ionicons name="send-sharp" size={14} color="#ffffff" />
                         </View>
                     </View>
@@ -577,78 +577,3 @@ const RootNavigator = (props) => {
 }
 
 export default RootNavigator;
-
-const style = StyleSheet.create({
-    darkBlue: {
-        backgroundColor: '#050C3D',
-        fontSize: 14,
-        color: '#ffffff',
-        width: 282,
-        marginTop: 0,
-        marginLeft: 0,
-        marginBottom: 0,
-        borderRadius: 0
-    },
-    lightBlue: {
-        backgroundColor: '#6379FF',
-        fontSize: 14,
-        color: '#ffffff',
-        width: 282,
-        marginTop: 0,
-        marginLeft: 0,
-        marginBottom: 0,
-        borderRadius: 0
-    },
-
-
-
-    Container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    drawerContent: {
-        flex: 1,
-    },
-    userInfoSection: {
-        alignItems: 'center'
-    },
-    title: {
-        fontSize: 16,
-        marginTop: 3,
-        fontWeight: 'bold'
-    },
-    caption: {
-        fontSize: 16,
-        lineHeight: 14
-    },
-    row: {
-        marginTop: 20,
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-    section: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginRight: 15
-    },
-    paragraph: {
-        fontWeight: 'bold',
-        marginRight: 3
-    },
-    drawerSection: {
-        marginTop: 60
-    },
-    bottomDrawerSection: {
-        marginBottom: 15,
-        borderTopColor: '#f4f4f4',
-        borderTopWidth: 1
-    },
-    preference: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingVertical: 12,
-        paddingHorizontal: 16
-    }
-})

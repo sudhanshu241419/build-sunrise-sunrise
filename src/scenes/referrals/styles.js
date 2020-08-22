@@ -9,6 +9,14 @@ export default StyleSheet.create({
       backgroundColor: '#ffffff',
       textAlign:'center',       
     },
+    sub_container:{ 
+      height: 5, 
+      width: 180, 
+      borderTopColor: '#6379FF', 
+      borderTopWidth: 3, 
+      marginBottom: 20, 
+      marginLeft: 115 
+    },
     
     text_header: {
         color: '#6379FF',

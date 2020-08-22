@@ -5,8 +5,7 @@ import {
   TextInput,
   ScrollView, 
   StatusBar, 
-  TouchableOpacity,
-  ActivityIndicator
+  TouchableOpacity,  
   } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -16,6 +15,7 @@ import styles from './styles'
 import { isEmpty } from '../../utils/validation';
 import {getUser } from '../../utils/api'
 import axios from "../../apiConfig";
+import ActivityIndicator from 'react-native-loading-spinner-overlay'
 
 const addBusiness = ({navigation}) => {
   const [data, setData] = React.useState({
@@ -155,10 +155,10 @@ const addBusiness = ({navigation}) => {
       </View>
 
       <View style={{ position: 'absolute', top: "50%", right: 0, left: 0, zIndex: 1 }}>
-        <ActivityIndicator animating={showLoader} size="large" color="#3542B3" />
+            <ActivityIndicator visible={showLoader} color="#6379FF" />
       </View>
 
-      <View style={{ height: 5, width: 180, borderTopColor: '#6379FF', borderTopWidth: 3, marginBottom:20, marginLeft:115 }} />
+      <View style={styles.sub_container} />
       <ScrollView>        
             
             <Text style={styles.referral}>Type of Business</Text>
@@ -322,9 +322,7 @@ const addBusiness = ({navigation}) => {
                 <TextInput                    
                     multiline={true}
                     numberOfLines={5}
-                    value={data.notes}
-                    name="terms"
-                    id="terms"
+                    value={data.notes}                   
                     style={[styles.textInput,{}]}
                     autoCapitalize="none"                         
                     onChangeText={(val) => setData({...data,notes:val})}  

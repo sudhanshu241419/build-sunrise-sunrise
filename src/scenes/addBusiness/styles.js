@@ -9,6 +9,14 @@ export default StyleSheet.create({
         backgroundColor: '#ffffff',
         textAlign: 'center',
     },
+    sub_container:{ 
+        height: 5, 
+        width: 180, 
+        borderTopColor: '#6379FF', 
+        borderTopWidth: 3, 
+        marginBottom:20, 
+        marginLeft:115 
+    },
 
     text_header: {
         color: '#6379FF',
@@ -82,15 +90,17 @@ export default StyleSheet.create({
         marginBottom: 5
     },
     signIn: {
-        width: '70%',
-        height: 72,
-        justifyContent: 'center',
-        alignItems: 'center',
+        width: 'auto',
+        height: 72,        
+        justifyContent: 'space-around',
+        alignItems:'center',
+        padding:10,
         borderRadius: 10
     },
     textSign: {
         fontSize: 28,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        alignItems:'center'
     },
 
     label: {
@@ -98,6 +108,9 @@ export default StyleSheet.create({
         color: '#ABABC9',
         fontSize: 19,
         fontFamily: fontFamily,
+        width: 'auto',         
+        justifyContent: 'space-around',
+        alignItems:'center',
     },
 
     pickerWrapper: {

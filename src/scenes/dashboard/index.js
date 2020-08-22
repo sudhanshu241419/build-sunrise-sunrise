@@ -51,7 +51,7 @@ const DashboardScreen = (props) => {
             <View style={{ padding: 30, justifyContent: 'space-between' }}>
                 <View style={{ alignItems: 'center', justifyContent: 'space-between' }}>
                     <Text style={styles.slider_heading}>{"Latest News"}   </Text>
-                    <Text style={styles.slider_heading}>{userToken}   </Text>
+                    {/* <Text style={styles.slider_heading}>{userToken}   </Text> */}
 
                     <Carousel
                         ref={carouselRef}
