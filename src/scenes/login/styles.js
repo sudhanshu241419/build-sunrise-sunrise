@@ -4,7 +4,7 @@ export default StyleSheet.create({
         flex: 1,
         backgroundColor: '#ffffff',
         textAlign: 'center',
-        justifyContent: 'center'
+        justifyContent: 'space-around'
     },
     text_header: {
         color: '#4359F7',
@@ -38,7 +38,7 @@ export default StyleSheet.create({
     fPassContainer: { marginLeft: 48 },
     fpassword: {
         color: '#ABABC9',
-        fontSize: 16,
+        fontSize: 15,
         marginTop: 5,
         marginRight:35
     },
@@ -52,10 +52,10 @@ export default StyleSheet.create({
     },
     textInput: {
         flex: 1,
-        marginTop: Platform.OS === 'ios' ? 0 : -12,
+        marginTop: Platform.OS === 'ios' ? 0 : -9,
         color: '#05375a',
         borderRadius: 10,
-        fontSize: 25,        
+        fontSize: 24,        
     },
     errorMsg: {
         color: '#FF0000',
@@ -66,17 +66,22 @@ export default StyleSheet.create({
         alignItems: 'center',
         marginTop: 30
     },
+    touchsignIn:{ 
+        width:'70%',             
+        justifyContent: 'space-around',
+        alignItems: 'center',
+    },
     signIn: {
-        width: '70%',
+        width:'100%',        
         height: 50,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10
     },
     createAcount: {
-        width: '49%',
+        width: '70%',
         height: 50,
-        justifyContent: 'center',
+        justifyContent: 'space-around',
         alignItems: 'center',
         borderRadius: 10
     },
@@ -88,7 +93,7 @@ export default StyleSheet.create({
     actionRemember: {
         flexDirection: 'row',
         height: 50,        
-        justifyContent: "space-around"
+        justifyContent: "space-around",        
     },
     checkcontainer: {
         flex: 1,
@@ -97,7 +102,7 @@ export default StyleSheet.create({
     },
     checkboxContainer: {
         flexDirection: "row",
-        marginBottom: 20,       
+        marginBottom: 15,       
         marginLeft:28
     },
     checkbox: {
@@ -106,6 +111,6 @@ export default StyleSheet.create({
     label: {
         marginTop: 5,
         color: '#1A1A1A',
-        fontSize: 16
+        fontSize: 15
     },
 });

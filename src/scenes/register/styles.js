@@ -7,6 +7,7 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
+    justifyContent:'space-around',
     textAlign: 'center',
   },
 
@@ -156,8 +157,9 @@ export default StyleSheet.create({
   label: {
     margin: 8,
     color: '#000',
-    fontSize: 18,
+    fontSize: 17,
     fontFamily: fontFamily,
+    justifyContent:'space-around'
   },
 
   statusBarContainer: {

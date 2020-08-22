@@ -98,19 +98,16 @@ export default StyleSheet.create({
         borderRadius: 10
     },
     textSign: {
-        fontSize: 28,
+        fontSize: 25,
         fontWeight: 'bold',
         alignItems:'center'
     },
 
     label: {
         margin: 8,
-        color: '#ABABC9',
-        fontSize: 19,
-        fontFamily: fontFamily,
-        width: 'auto',         
-        justifyContent: 'space-around',
-        alignItems:'center',
+        color:'#ABABC9',
+        fontSize:15,
+        fontFamily:fontFamily        
     },
 
     pickerWrapper: {

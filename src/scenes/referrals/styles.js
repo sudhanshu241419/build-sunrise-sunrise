@@ -163,11 +163,12 @@ text: {
         marginBottom:5
     },
     signIn: {
-        width: '70%',
-        height: 72,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 10
+      width: 'auto',
+      height: 72,        
+      justifyContent: 'space-around',
+      alignItems:'center',
+      padding:10,
+      borderRadius: 10
     },
     createAcount: {
       width: '49%',
@@ -177,8 +178,9 @@ text: {
       borderRadius: 10
   },
     textSign: {
-        fontSize: 28,
-        fontWeight: 'bold'
+        fontSize: 25,
+        fontWeight: 'bold',
+        alignItems:'center'
     },
     checkcontainer: {
       flex: 1,
@@ -199,7 +201,7 @@ text: {
     label: {
       margin: 8,
       color:'#ABABC9',
-      fontSize:19,
+      fontSize:15,
       fontFamily:fontFamily,
     },
 

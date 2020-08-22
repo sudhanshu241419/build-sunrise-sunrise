@@ -248,7 +248,7 @@ const LoginScreen = ({ navigation, checkLogin, currentUser }) => {
                 </View>
                 <View style={styles.button}>
                     <TouchableOpacity
-                        style={styles.signIn}
+                        style={styles.touchsignIn}                        
                         onPress={() => loginHandle()}
                     >
                         <LinearGradient

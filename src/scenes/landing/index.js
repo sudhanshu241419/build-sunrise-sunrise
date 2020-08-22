@@ -62,7 +62,7 @@ const LandingScreen = ({ navigation }) => {
               GET STARTED
                     </CustomButton>
           </View>
-          <View style={{ paddingTop: 25 }}>
+          <View style={{ paddingTop: 25,marginBottom:10 }}>
             <Text style={styles.text}>Don't have account?</Text>
             <CustomButton
               onPress={() => navigation.navigate('Login')}
