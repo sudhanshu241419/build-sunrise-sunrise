@@ -53,39 +53,41 @@ const RegisterScreen = ({ navigation }) => {
     const [agreeTerm, setAgreeTerm] = React.useState(true);
     const [sameBillAddress,setSameBillAddress] = React.useState(true);    
     const [planData, setPlan] = React.useState([{ "plan_price": "0.00" }]);    
-    const [managerData, setManager] = React.useState([{ "id": 1, "firstname": "Singh", "email": "signgh1013@yopmail.com" }]);
+    const [managerData, setManager] = React.useState({});
     const groupId = { '0': '1', '35': '6', '65': '5', '99': '4' }
     
     React.useEffect(() => {
-        setLoader(true);
+        getPlan()
+        getManager()        
+    }, []);
 
+    const getPlan = () =>{
+        setLoader(true);
         axios.get('krypson-plan/plan/search?searchCriteria[pageSize]=10')
-            .then(function (response) {               
-                setPlan(response.data.items);
-                setLoader(false);
+            .then(function (response) {                         
+                setPlan(response.data.items);   
+                return true            
             })
             .catch(function (error) {
-                console.warn(error, 'repo pep erro');
+                console.warn(error);
             });
-    }, []);
-   
-    const getManager = () => {
-
-        if (managerData && Object.keys(managerData).length == 0) {
-            setLoader(true);
-            axios.get('customers/search?searchCriteria[filter_groups][0][filters][1][field]=group_id&searchCriteria[filter_groups][0][filters][1][value]=4&searchCriteria[filter_groups][0][filters][1][condition_type]=eq')
-                .then(function (response) {
-                    setManager(response.data.items);
-                    setLoader(false);
-                })
-                .catch(function (error) {
-                    setLoader(false);
-                    console.warn(error, 'repo pep erro');
-
-                });
-        }
-        return true;
     }
+   
+    const getManager = () => {        
+        
+        axios.get('customers/search?searchCriteria[filter_groups][0][filters][1][field]=group_id&searchCriteria[filter_groups][0][filters][1][value]=4&searchCriteria[filter_groups][0][filters][1][condition_type]=eq')
+            .then(function (response) {                
+                setManager(response.data.items);                
+                setLoader(false);
+                return true;
+            })
+            .catch(function (error) {                
+                console.log(error);
+                setLoader(false);
+            });
+            return true;
+    }   
+    
 
     const handleInputChange = (val, name) => {
         setData({
@@ -414,11 +416,11 @@ const RegisterScreen = ({ navigation }) => {
                                 <Picker
                                     mode="dropdown"
                                     style={styles.pickerContentB2b}
-                                    selectedValue={(data.planValue) || 0}
-                                    onValueChange={(value) => {
-                                        setData({ ...data, planValue: value })
-                                        value == 65 ? getManager() : null
-                                    }}
+                                    selectedValue={data.planValue} 
+                                    onValueChange={(itemValue, itemIndex) =>
+                                        setData({...data,planValue: itemValue})                                        
+                                      }                        
+                                    
                                 >
                                     {
                                         planData.map((item, index) =>
@@ -436,15 +438,15 @@ const RegisterScreen = ({ navigation }) => {
                                             mode="dropdown"
                                             style={styles.pickerContentB2b}
                                             selectedValue={(data.managerValue) || 1}
-                                            onValueChange={(value) => {
-                                                setData({ ...data, managerValue: value });
-                                            }}
+                                            onValueChange={(itemValue, itemIndex) =>
+                                                setData({ ...data, managerValue: itemValue })
+                                            }
                                         >
 
                                             {
-                                                managerData.map((item, index) =>
-                                                    <Picker.Item label={item.firstname} value={item} key={index} />
-                                                )
+                                                (managerData.length > 0)?managerData.map((item, index) =>
+                                                    <Picker.Item label={item.firstname} value={item.id} key={index} />                                                
+                                                ):null
                                             }
 
                                         </Picker>
