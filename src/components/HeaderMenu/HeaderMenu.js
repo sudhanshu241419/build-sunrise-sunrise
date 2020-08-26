@@ -1,13 +1,17 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, SafeAreaView } from 'react-native';
 import styles from './Styles'
-const HeaderMenu = () => {
-return(
-<View style={styles.headerContainer}>
-    <Text style={[styles.headerContents,{marginLeft:0}]}>Product</Text> 
-    <Text style={[styles.headerContents,{marginLeft:35}]}>Service</Text>
-    <Text style={[styles.headerContents,{marginLeft:33}]}>Marketing Materials</Text> 
-</View>
+
+
+const HeaderMenu = (props) => {   
+return(    
+<SafeAreaView>
+    <View style={styles.headerContainer}>
+        <Text style={[styles.headerContents]} onPress={() => props.nav.navigate('Product')}>Product</Text> 
+        <Text style={[styles.headerContents]} onPress={() => props.nav.navigate('Service')}>Service</Text>
+        <Text style={[styles.headerContents]} onPress={() => props.nav.navigate('Marketing')}>Marketing Materials</Text> 
+    </View>
+</SafeAreaView>
 );
 }
 

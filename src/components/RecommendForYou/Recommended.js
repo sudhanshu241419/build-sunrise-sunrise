@@ -16,7 +16,7 @@ const Recommended = (props) => {
                     </View>
                     <View style={{ flex: 1, width: "50%", marginLeft: 70 }}>
                         <Image source={require('../../assets/emp.png')} />
-                        <Text style={{ color: '#383838', height: 19, fontSize: 14, textAlign: 'left' }}>Carpet Cleaning Special</Text>
+                        <Text style={{ color: '#383838', height: 19, fontSize: 14, textAlign: 'left',justifyContent:'space-around'}}>Carpet Cleaning Special</Text>
                         <Text style={{ color: '#000000', height: 19, fontSize: 14, fontWeight: 'bold', textAlign: 'left', }}>From $99/m</Text>
                     </View>
 

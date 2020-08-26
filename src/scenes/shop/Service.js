@@ -6,26 +6,19 @@ import {
     Image,
     Dimensions,
     StatusBar,
-    StyleSheet
 } from 'react-native';
 
 import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from 'react-native-paper';
 import styles from './styles'
+
 import Search from '../../components/Search/Search';
 import HeaderMenu from '../../components/HeaderMenu/HeaderMenu';
 import Location from '../../components/Location/Location';
-import Banner from '../../components/Banner/Banner';
-import Adds from '../../components/Adds/Adds';
-import DealOfDay from '../../components/DealOfDay/DealOfDay';
-import RateYourPurchase from '../../components/RateYourPurchase/RateYourPurchase';
-import Recommended from '../../components/RecommendForYou/Recommended';
-import ShopTopBrand from '../../components/ShopTopBrand/ShopTopBrand'
-import Products from '../../components/Products/Products'
 import BodyBand from '../../components/BodyBand/BodyBand'
 const win = Dimensions.get('window');
 
-const Shop = ({navigation}) => {
+const Service = ({navigation}) => {
     const [data, setData] = React.useState({
 
     });
@@ -42,38 +35,15 @@ const Shop = ({navigation}) => {
                 <HeaderMenu nav={navigation}/>
             </LinearGradient>
             
-            <Location />
+            
 
             {/* Scroll content area */}
 
-            <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
-                <Banner win={win} title={false} imgpath="../../assets/Black-Friday-and-Cyber-Monday.png" />
-                <Adds />
-                <DealOfDay win={win} />
+            <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>              
 
-                <BodyBand phrase="View More Deals" iconName="ios-chevron-forward-sharp" goto="Deals" nav={navigation}/>
-
-                <RateYourPurchase nav={navigation}/>
-
-                <View style={[styles.fdirection, styles.borderColor, styles.borderTopWidth, { marginBottom: 10 }]} />
-                <View style={[styles.fdirection, styles.borderColor, styles.borderBottomWidth, { marginTop: 5 }]} />
-                <Recommended />
-                <View style={[styles.fdirection, styles.borderColor, styles.borderBottomWidth, { marginTop: 15 }]} />
-
-                <ShopTopBrand win={win} />
 
                 <View style={[styles.row, styles.borderColor, styles.borderBottomWidth, { marginTop: 25 }]} />
-                <Products title='Buy It Again' titleMargin='' />
-
-                <View style={[styles.row, styles.borderTopWidth, { marginBottom: 10 }]} />
-                <View style={[styles.row, styles.borderBottomWidth, styles.borderColor]} />
-                <Products title='Deals Near You' titleMargin='' />
-                <View style={[styles.row, styles.borderBottomWidth, styles.borderColor]} />
-
-                <View style={[styles.row, styles.needSuggestions, styles.borderColor]}>
-                    <Text style={[styles.row, styles.suggestionContent, styles.textWeight]}>Need Suggestions? ContactUs!</Text>
-                </View>
-
+                
                 <Text style={[styles.shopAllDep, styles.textWeight]}>
                     Shop All Departments & Services
                 </Text>
@@ -111,7 +81,7 @@ const Shop = ({navigation}) => {
                     </View>
                 </View>
 
-                <BodyBand phrase="View All Services" iconName="ios-chevron-forward-sharp" goto="Service" nav={navigation}/>
+                <BodyBand phrase="View All Services" iconName="ios-chevron-forward-sharp" />
 
                 <Text style={[styles.services, styles.textWeight]}>
                     Products
@@ -147,7 +117,7 @@ const Shop = ({navigation}) => {
                     </View>
                 </View>
 
-                <BodyBand phrase="View All Product Categories" iconName="ios-chevron-forward-sharp" goto="Categories" nav={navigation}/>
+                <BodyBand phrase="View All Product Categories" iconName="ios-chevron-forward-sharp" />
 
             </ScrollView>
         </View>
@@ -156,4 +126,4 @@ const Shop = ({navigation}) => {
 
 }
 
-export default Shop;
+export default Service;

@@ -13,7 +13,7 @@ export default StyleSheet.create({
         borderBottomWidth:1,
         padding:5,
         height:40,
-        marginTop:5
+              
    },
 
    bandText:{ fontSize:16, paddingTop:3,marginLeft:6,height:25,fontWeight:'bold'},

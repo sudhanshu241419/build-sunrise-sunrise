@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, ScrollView } from 'react-native';
+import { Text, View, Image, ScrollView, SafeAreaView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/Ionicons';
 import CustomButton from '../../components/custom-button';
@@ -16,11 +16,11 @@ const Shop = () => {
     return (
         <View style={styles.container}>
 
-            <View style={{ flexDirection: 'row' }}>
+            {/* <View style={{ flexDirection: 'row' }}>
                 <Text style={[styles.Tab, { color: '#6379FF' }]}>Current Orders</Text>
                 <Text style={styles.Tab}>Past Orders</Text>
             </View>
-            <View style={styles.underLine} />
+            <View style={styles.underLine} /> */}
             <View >
                 <Text style={styles.heading}>Rate Past Purchases</Text>
 
@@ -211,20 +211,21 @@ const Shop = () => {
                 </View>
 
 
-                <View style={styles.master}>
+                <SafeAreaView style={styles.master}>
                     <View style={[styles.borderColor, { height: 200, }]}>
                         <View style={[{ marginTop: 15, marginLeft: 25 }]}>
                             <Text style={styles.productHeading}>Related Products</Text>
                         </View>
-                        <View style={[styles.row, { marginTop: 10, marginLeft: 10 }]}>
-                            <Image source={require('../../assets/kitchenware.png')} style={[styles.row, { margin: 5, marginLeft: 0 }]} />
-                            <Image source={require('../../assets/shoes.png')} style={[styles.row, { margin: 5 }]} />
-                            <Image source={require('../../assets/iphone11-select-2019-family.png')} style={[styles.row, { margin: 5 }]} />
+                        <View style={[styles.row, {justifyContent:'space-around', marginTop:10 }]}>
+                            <Image source={require('../../assets/kitchenware.png')} style={[styles.row]} />
+                            <Image source={require('../../assets/shoes.png')} style={[styles.row]} />
+                            <Image source={require('../../assets/iphone11-select-2019-family.png')} style={[styles.row]} />
                         </View>
                     </View>
-                </View>
-                <View style={[styles.row,{margin: 5 }]}>
-                    <View style={{width:190}}>
+                </SafeAreaView>
+               
+                    <SafeAreaView style={{flexDirection:"row",justifyContent:'space-around',marginBottom:10}}>
+                    
                     <CustomButton style={styles.row}
                         textAlign={'center'}
                         onPress={() => (cc)}
@@ -234,8 +235,9 @@ const Shop = () => {
                         borderColor='#6379FF'
                         borderRadius={10}                        
                         height={20}
+                        width={190}
                         childrenStyle={{
-                            fontSize: 30,
+                            fontSize: 28,
                             color: '#C8C8C8',                            
                             textAlign: 'center',
                             fontFamily:fontFamily,
@@ -243,21 +245,21 @@ const Shop = () => {
                         }}>
                         Previous
                     </CustomButton>
-                    </View>
+                   
 
-                    <View style={{width:190,marginLeft:20}}>
-
-                    <CustomButton style={[styles.row,{marginLeft:5}]}
+                    <CustomButton style={[styles.row]}
                         textAlign={'center'}
                         onPress={() => (cc)}
-                        padding={5}
+                        
                         backgroundColor='#6379FF'
                         borderColor='#6379FF'
                         borderWidth={3}
                         borderRadius={10}                        
                         height={10}
+                        padding={5}
+                        width={190}
                         childrenStyle={{
-                            fontSize: 30,
+                            fontSize: 28,
                             color: '#fff',
                             textAlign: 'center',
                             fontFamily:fontFamily,
@@ -266,9 +268,9 @@ const Shop = () => {
                         Next
                         <Ionicons name ="arrow-forward-outline"  style={{ color: '#fff', fontSize: 25,marginTop:10}} />
                     </CustomButton>
-                    </View>
-
-                </View>
+                   
+                    </SafeAreaView>
+               
 
             </ScrollView>
         </View>

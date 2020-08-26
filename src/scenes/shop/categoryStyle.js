@@ -7,7 +7,7 @@ export default StyleSheet.create({
     container: {
         flex: 1,   
         textAlign: 'center',
-        backgroundColor:'#fff'
+        backgroundColor:'#f7f2f2'
       },
     row:{flexDirection:'row'},
     textColor:{color:'#ffffff'},
@@ -17,9 +17,10 @@ export default StyleSheet.create({
    borderColor: { borderColor: '#707070' },
    icon:{ flexDirection: 'row', color: '#FFC500', fontSize: 30, },
    icon1:{ flexDirection: 'row', color: '#999', fontSize: 30, },
-   productHeading:{ fontSize: 25, color: '#000000', paddingTop: 3, marginLeft: 6, height: 33, fontWeight: 'bold' },
-   productSubHeading:{ fontSize: 20, color: '#707070', paddingTop: 3, marginLeft: 6, height: 27, fontWeight: 'bold' },
-   master:{ borderWidth: 1, margin: 5, marginTop: 10, justifyContent:'space-around'},
-   masterBranch:{ borderWidth: 1, margin: 5,},
-   underLine:{borderWidth: 1.5,borderColor:'#6379FF', width:110,marginTop: 5}
+   productHeading:{ fontSize: 25, color: '#6379FF', paddingTop: 3, marginLeft: 6, fontWeight: 'bold' },
+   productSubHeading:{ fontSize: 15, color: '#000000', paddingTop: 3, marginLeft: 6, },
+   master:{ borderWidth: 1, margin:4, marginTop: 5, justifyContent:'space-around', backgroundColor:'#fff',borderColor:'#000', borderWidth:1},
+   masterBranch:{ borderWidth: 1, margin:4, backgroundColor:'#fff',borderColor:'#000', borderWidth:1},
+   underLine:{borderWidth: 1.5,borderColor:'#6379FF', width:110,marginTop: 5},
+   headtitle:{ margin:4, marginTop: 5, justifyContent:'space-around',},
 })

@@ -4,6 +4,6 @@ const labelfontFamily= Platform.OS === 'ios' ? 'Segoe UI,Bold' : 'sans-serif-med
 
 const letterSpacing = 2;
 export default StyleSheet.create({
-    headerContainer:{flexDirection: 'row',padding:5,height:40,margin:10},
-    headerContents:{flexDirection: 'row',fontSize:20, color:'#fff',height:27},
+    headerContainer:{flexDirection: 'row',height:40,justifyContent:'space-around',marginTop:10},
+    headerContents:{flexDirection: 'row',fontSize:20, color:'#fff',height:30},
 })

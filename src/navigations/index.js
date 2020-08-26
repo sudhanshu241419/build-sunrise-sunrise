@@ -4,6 +4,11 @@ import LandingScreen from '../scenes/landing/authLanding';
 import AddReferrals from '../scenes/referrals/AddReferrals'
 import ReferralHistoryScreen from '../scenes/referrals/History'
 import ShopScreen from '../scenes/shop/Shop'
+import Service from '../scenes/shop/Service'
+import Marketing from '../scenes/shop/MarketingMaterials'
+import Deals from '../scenes/shop/Deals'
+import AllCategories from '../scenes/shop/Categories'
+
 import { Image, View, Text, StyleSheet, SafeAreaView } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
@@ -18,6 +23,48 @@ import RateYourPurchase from '../scenes/rateYourPurchase'
 import MyCustomer from '../scenes/customerOfManager'
 import { AuthContext } from '../components/context';
 import {getUser } from '../utils/api'
+import PastOrder from '../scenes/rateYourPurchase/pastOrder'
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+
+const OrderTopTab = createMaterialTopTabNavigator();
+
+const OrderTabs = ()=> {
+  return (
+    <OrderTopTab.Navigator tabBarOptions={{
+        activeTintColor: '#6379FF',
+        inactiveTintColor:'#fff',
+        tabStyle: { width: 120,height:35},
+        scrollEnabled:true,
+        labelStyle: { fontSize: 11,color: '#000000',fontWeight:'bold', },
+        style: { backgroundColor: '#fff',},
+      }} lazy={true}>
+      <OrderTopTab.Screen name="Current Order" component={RateYourPurchase} />
+      <OrderTopTab.Screen name="Past Order" component={PastOrder} />
+      <OrderTopTab.Screen name="Your Address" component={RateYourPurchase} />
+      <OrderTopTab.Screen name="Your Payment" component={PastOrder} />
+      
+      
+    </OrderTopTab.Navigator>
+  );
+}
+
+
+const ShopStackTopNavigation = createStackNavigator();
+
+const ShopTabs = ()=> {
+  return (    
+    <ShopStackTopNavigation.Navigator headerMode='none'>
+        <ShopStackTopNavigation.Screen name="Product" component={ShopScreen} />
+        <ShopStackTopNavigation.Screen name="Service" component={Service} />
+        <ShopStackTopNavigation.Screen name="Marketing" component={Marketing} />
+        <ShopStackTopNavigation.Screen name="RateYourPurchase" component={RateYourPurchase} />
+        <ShopStackTopNavigation.Screen name="Deals" component={Deals} />
+        <ShopStackTopNavigation.Screen name="Categories" Title="All Categories" component={AllCategories} />
+    </ShopStackTopNavigation.Navigator>
+  );
+}
+
+
 
 
 const LandingStack = createStackNavigator();
@@ -96,8 +143,10 @@ const ShopStackScreen = ({ navigation }) => (
     >
         <ShopStack.Screen
             name="Shop"
-            component={ShopScreen}
+            //component={ShopScreen}
+            children={ShopTabs}
             options={{
+                title:'Shop',
                 headerTitleAlign: 'center',
                 headerTitle: props => <LogoTitle {...props} />,
                 headerLeft: () => (<Icon.Button name="menu" size={25}
@@ -188,7 +237,8 @@ const RateYourPurchaseStackScreen = ({ navigation }) => (
     >
         <RateYourPurchaseStack.Screen
             name="RateYourPurchase"
-            component={RateYourPurchase}
+            // component={RateYourPurchase}
+            children={OrderTabs}
             options={{
                 headerTitleAlign: 'center',
                 headerTitle: props => <LogoTitle {...props} />,
@@ -537,7 +587,6 @@ const DrawerContent = (props) => {
 
 
 
-
 const RootNavigator = (props) => {
     const [data, setData] = React.useState({
         firstName:'', lastName:'', emailAddress: '', groupId: '', id: ''
@@ -568,6 +617,7 @@ const RootNavigator = (props) => {
             <DrawerNav.Screen name="Shop" component={ShopStackScreen} />
             <DrawerNav.Screen name="AddBusiness" component={AddBusinessStackScreen} />
             <DrawerNav.Screen name="EBusinessCard" component={EBusinessCardStackScreen} />
+            {/* <DrawerNav.Screen name="RateYourPurchase" children={OrderTabs} /> */}
             <DrawerNav.Screen name="RateYourPurchase" component={RateYourPurchaseStackScreen} />
             <DrawerNav.Screen name="MyCustomer" component={MyCustomerStackScreen} />
         </DrawerNav.Navigator>

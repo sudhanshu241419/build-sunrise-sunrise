@@ -32,9 +32,9 @@ return(
      </View>        
   
     </View>
-    <View style={{borderColor: "#707070",borderTopWidth:1, backgroundColor:"#ffffff",height:40,width:350,marginLeft:32,marginTop:8}}>
-          <Text style={{flexDirection: 'row', fontSize:16, color:'#6379FF', marginTop:7,marginLeft:6,height:25,fontWeight:'bold'}}>Rate More Products</Text> 
-          <Ionicons name="ios-chevron-forward-sharp" style={{flexDirection: 'row',color:'#6379FF', fontSize:20,bottom: 10,top:10, position: "absolute",right:0}}/>
+    <View style={{borderColor: "#707070",borderTopWidth:1, backgroundColor:"#ffffff",height:40,width:350,marginLeft:32,marginTop:8}} >
+          <Text style={{flexDirection: 'row', fontSize:16, color:'#6379FF', marginTop:7,marginLeft:6,height:25,fontWeight:'bold'}} onPress={() => props.nav.navigate('RateYourPurchase')}>Rate More Products</Text> 
+          <Ionicons name="ios-chevron-forward-sharp" style={{flexDirection: 'row',color:'#6379FF', fontSize:20,bottom: 10,top:10, position: "absolute",right:0}} onPress={() => props.nav.navigate('RateYourPurchase')} /> 
     </View>
 </>
 );
