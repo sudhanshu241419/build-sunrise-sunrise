@@ -38,7 +38,7 @@ const Shop = ({navigation}) => {
                 end={{ x: 1, y: 0.5 }}
             >
                 <StatusBar />
-                <Search />
+                <Search nav={navigation} back='Marketing'/>
                 <HeaderMenu nav={navigation} />
             </LinearGradient>
             

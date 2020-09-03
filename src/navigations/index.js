@@ -4,6 +4,7 @@ import LandingScreen from '../scenes/landing/authLanding';
 import AddReferrals from '../scenes/referrals/AddReferrals'
 import ReferralHistoryScreen from '../scenes/referrals/History'
 import ShopScreen from '../scenes/shop/Shop'
+import Search from '../scenes/shop/Search'
 import Service from '../scenes/shop/Service'
 import Marketing from '../scenes/shop/MarketingMaterials'
 import Deals from '../scenes/shop/Deals'
@@ -16,15 +17,18 @@ import { Avatar, Title, Caption, Drawer} from 'react-native-paper'
 import styles from './styles';
 import DashboardScreen from '../scenes/dashboard';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import LinearGradient from 'react-native-linear-gradient'
 import AddBusinessScreen from '../scenes/addBusiness/addBusiness'
 import EBusinessCard from '../scenes/shareEBusinessCard'
 import RateYourPurchase from '../scenes/rateYourPurchase'
+import Address from '../scenes/rateYourPurchase/address'
 import MyCustomer from '../scenes/customerOfManager'
 import { AuthContext } from '../components/context';
 import {getUser } from '../utils/api'
 import PastOrder from '../scenes/rateYourPurchase/pastOrder'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import ProfileScreen from '../scenes/register/profile'
 
 const OrderTopTab = createMaterialTopTabNavigator();
 
@@ -32,16 +36,16 @@ const OrderTabs = ()=> {
   return (
     <OrderTopTab.Navigator tabBarOptions={{
         activeTintColor: '#6379FF',
-        inactiveTintColor:'#fff',
-        tabStyle: { width: 120,height:35},
+        inactiveTintColor:'#000',
+        tabStyle: { flexdirection:'row',justifyContent:'space-around',height:45},
         scrollEnabled:true,
-        labelStyle: { fontSize: 11,color: '#000000',fontWeight:'bold', },
-        style: { backgroundColor: '#fff',},
+        labelStyle: { fontSize: 12,color: '#000000',fontWeight:'bold' },
+        style: { backgroundColor: '#fff', },
       }} lazy={true}>
       <OrderTopTab.Screen name="Current Order" component={RateYourPurchase} />
       <OrderTopTab.Screen name="Past Order" component={PastOrder} />
-      <OrderTopTab.Screen name="Your Address" component={RateYourPurchase} />
-      <OrderTopTab.Screen name="Your Payment" component={PastOrder} />
+      <OrderTopTab.Screen name="Address" component={Address} />
+      <OrderTopTab.Screen name="Payment" component={PastOrder} />
       
       
     </OrderTopTab.Navigator>
@@ -53,13 +57,14 @@ const ShopStackTopNavigation = createStackNavigator();
 
 const ShopTabs = ()=> {
   return (    
-    <ShopStackTopNavigation.Navigator headerMode='none'>
+    <ShopStackTopNavigation.Navigator headerMode='none' screenOptions={{gestureEnabled:true,gestureDirection:"horizontal"}}>
         <ShopStackTopNavigation.Screen name="Product" component={ShopScreen} />
         <ShopStackTopNavigation.Screen name="Service" component={Service} />
         <ShopStackTopNavigation.Screen name="Marketing" component={Marketing} />
         <ShopStackTopNavigation.Screen name="RateYourPurchase" component={RateYourPurchase} />
         <ShopStackTopNavigation.Screen name="Deals" component={Deals} />
         <ShopStackTopNavigation.Screen name="Categories" Title="All Categories" component={AllCategories} />
+        <ShopStackTopNavigation.Screen name="Search" Title="Search" component={Search} />        
     </ShopStackTopNavigation.Navigator>
   );
 }
@@ -76,6 +81,7 @@ const AddBusinessStack = createStackNavigator();
 const EBusinessCardStack = createStackNavigator();
 const RateYourPurchaseStack = createStackNavigator();
 const MyCustomerStack = createStackNavigator();
+const UpdateProfileStack = createStackNavigator();
 
 
 const DrawerNav = createDrawerNavigator();
@@ -139,6 +145,7 @@ const ShopStackScreen = ({ navigation }) => (
                 backgroundColor: '#1B2356',
                 height: 65,
             },
+            
         }}
     >
         <ShopStack.Screen
@@ -295,6 +302,30 @@ const ReferralHistoryStackScreen = ({ navigation }) => (
     </ReferralHistoryStack.Navigator>
 )
 
+
+const updateProfileScreen = ({ navigation }) => (
+    <UpdateProfileStack.Navigator
+        screenOptions={{
+            headerBackground: props => <GradientHeader {...props} />,
+            headerStyle: {
+                backgroundColor: '#1B2356',
+                height: 65,
+            },
+        }}
+    >
+        <UpdateProfileStack.Screen
+            name="Profile"
+            component={ProfileScreen}            
+            options={{
+                headerTitleAlign: 'center',
+                headerTitle: props => <LogoTitle {...props} />,
+                headerLeft: () => (<Icon.Button name="menu" size={25}
+                    backgroundColor="transparent" onPress={() => navigation.openDrawer()}></Icon.Button>)
+            }}
+        />
+    </UpdateProfileStack.Navigator>
+)
+
 const GradientHeader = () => (
     <View style={{ backgroundColor: '#eee' }}>
         <LinearGradient
@@ -341,9 +372,12 @@ const DrawerContent = (props) => {
                             />
                         </View>
                         <View style={{ alignItems: 'center' }}>
+                            <View style={{flexDirection:'row',justifyContent:'space-between'}}>
                             <Title style={[styles.title,styles.font14]}>
                                 {props.firstName} {props.lastName}
-                            </Title>
+                            </Title> 
+                            <FontAwesome name="edit" title="Edit" style={{color:"#fff",fontSize:20,margin:8}} onPress={() => { props.navigation.navigate('Profile') }}/>
+                            </View>
                             <Title style={[styles.title,styles.font18]}>VIP Manager</Title>
                             <Caption style={[styles.title,styles.font14,{marginBottom: 30 }]}>{props.email}</Caption>
                         </View>
@@ -562,7 +596,7 @@ const DrawerContent = (props) => {
                         <View style={[styles.flexdirection,{paddingTop: 16 }]}>
                             <Ionicons name="send-sharp" size={14} color="#ffffff" />
                         </View>
-                    </View>
+                    </View>                    
 
                     <View style={[styles.flexdirection,styles.width90]}>
                         <View style={[styles.flexdirection,styles.width100]}>
@@ -620,6 +654,7 @@ const RootNavigator = (props) => {
             {/* <DrawerNav.Screen name="RateYourPurchase" children={OrderTabs} /> */}
             <DrawerNav.Screen name="RateYourPurchase" component={RateYourPurchaseStackScreen} />
             <DrawerNav.Screen name="MyCustomer" component={MyCustomerStackScreen} />
+            <DrawerNav.Screen name="Profile" component={updateProfileScreen} />
         </DrawerNav.Navigator>
     )
 

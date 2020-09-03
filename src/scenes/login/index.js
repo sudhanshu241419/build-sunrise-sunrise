@@ -142,7 +142,11 @@ const LoginScreen = ({ navigation, checkLogin, currentUser }) => {
                     userToken: userToken,
                     groupId: response.data.group_id,
                     storeId: response.data.store_id,
-                    websiteId: response.data.website_id
+                    websiteId: response.data.website_id,
+                    address:response.data.addresses,
+                    plan:response.data.custom_attributes,
+                    default_billing_id:response.data.default_billing,
+                    default_shipping_id:response.data.default_shipping,
                 }]
                 signIn(userInfo);
                 setLoader(false);

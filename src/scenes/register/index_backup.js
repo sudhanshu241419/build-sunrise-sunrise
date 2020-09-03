@@ -7,21 +7,19 @@ import {
     ScrollView,
     StatusBar,
     StyleSheet,
-    Alert,    
-    TouchableHighlight
+    Alert
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { useTheme } from 'react-native-paper';
 import styles from './styles'
 import axios from "../../apiConfig";
-import { isEmpty } from '../../utils/validation';
+import { isEmpty, validateEmail } from '../../utils/validation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-community/picker';
 import { connect } from 'react-redux';
 import { checkLogin } from '../../actionCreator/login/actions';
 import { AuthContext } from '../../components/context'
 import ActivityIndicator from 'react-native-loading-spinner-overlay'
-import { UpdateSearch, handleFormValidation } from './registerFunction'
 
 const RegisterScreen = ({ navigation }) => {
     const [data, setData] = React.useState({
@@ -35,12 +33,12 @@ const RegisterScreen = ({ navigation }) => {
         state: '',
         zipCode: '',
         password: '',
-        confirmPassword: '',
+        confirmPassword: '',   
         terms: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
         isSelected: true,
         cardNumber: '',
         exp: '',
-        cvv: '',
+        cvv: '',       
         planValue: 0,
         managerValue: 1,
 
@@ -53,7 +51,7 @@ const RegisterScreen = ({ navigation }) => {
     const { colors } = useTheme();
 
     const [agreeTerm, setAgreeTerm] = React.useState(true);
-    const [sameBillAddress, setSameBillAddress] = React.useState(true);
+    const [sameBillAddress,setSameBillAddress] = React.useState(true);    
     const [planData, setPlan] = React.useState(
         [
             {
@@ -62,55 +60,78 @@ const RegisterScreen = ({ navigation }) => {
                 "plan_price": "0.00",
                 "plan_expiry": "1 month"
             },
-
-        ]
-    );
+            {
+                "plan_id": "2",
+                "plan_name": "Basic / Service Plan ",
+                "plan_price": "35",
+                "plan_expiry": "1 month"
+            },
+            {
+                "plan_id": "3",
+                "plan_name": "Business Plan",
+                "plan_price": "65.00",
+                "plan_expiry": "1 month"
+            },
+            {
+                "plan_id": "4",
+                "plan_name": "Manager Plan",
+                "plan_price": "99.00",
+                "plan_expiry": "1 month"
+            }
+        ]               
+    );    
     const [managerData, setManagerData] = React.useState({});
-    const [showManagerList, setShowManagerList] = React.useState(false)
-    const [showManagerSearch, setShowManagerSearch] = React.useState(false)
-    const [manager, setManager] = React.useState({
-        id: '',
-        firstname: '',
+    const [manager,setManager] = React.useState({
+        id:'',
+        firstname:'',
     })
     const groupId = { '0': '1', '35': '6', '65': '5', '99': '4' }
-    const [items, setItems] = React.useState({});
-    const [searchTxt, setSearchTxt] = React.useState(null);
-
+    
     React.useEffect(() => {
-        getPlan()
-        getManager()
+        //getPlan()
+        getManager()        
     }, []);
 
-    const getPlan = () => {
+    const getPlan = () =>{
         setLoader(true);
         axios.get('krypson-plan/plan/search?searchCriteria[pageSize]=10')
-            .then(function (response) {
-                console.log(response.data.items);
-                setPlan(response.data.items);
-                return true
+            .then(function (response) { 
+                console.log(response.data.items);                        
+                setPlan(response.data.items);   
+                return true            
             })
             .catch(function (error) {
                 console.warn(error);
             });
     }
-
-    const getManager = () => {
+   
+    const getManager = () => {  
+       const managerRec = [
+            {"id":"60","firstname":"sud","email":"sud@gmail.com"},
+            {"id":"61","firstname":"Singh","email":"singh@gmail.com"},
+            {"id":"62","firstname":"Test","email":"Test@gmail.com"},
+        ]   
         
-        axios.get('customers/search?searchCriteria[filter_groups][0][filters][1][field]=group_id&searchCriteria[filter_groups][0][filters][1][value]=4&searchCriteria[filter_groups][0][filters][1][condition_type]=eq')
-            .then(function (response) {
-                setManagerData(response.data.items);
-                setManager({id: response.data.items[0].id, firstname: response.data.items[0].firstname })
-                
-                setLoader(false);
-                return true;
-            })
-            .catch(function (error) {
-                console.log(error);
-                setLoader(false);
-            });
-        return true;
-    }
+      setManagerData(managerRec);
+      console.log(managerRec)
+      setManager({...manager,id:managerRec[0].id,firstname:managerRec[0].firstname})
 
+        
+        // axios.get('customers/search?searchCriteria[filter_groups][0][filters][1][field]=group_id&searchCriteria[filter_groups][0][filters][1][value]=4&searchCriteria[filter_groups][0][filters][1][condition_type]=eq')
+        //     .then(function (response) {                
+        //         setManager(response.data.items);   
+        //         console.log(response.data.items);
+                   
+        //         setLoader(false);
+        //         return true;
+        //     })
+        //     .catch(function (error) {                
+        //         console.log(error);
+        //         setLoader(false);
+        //     });
+        //     return true;
+    }   
+    
 
     const handleInputChange = (val, name) => {
         setData({
@@ -131,16 +152,45 @@ const RegisterScreen = ({ navigation }) => {
             ...data,
             confirmPassword: val
         });
-    }
+    }  
 
     const submitSignUpForm = () => {
         let error = false;
         let planValue = parseInt(data.planValue);
         let groupIdValue = groupId[planValue];
-        if (!handleFormValidation(data)) {
-            return false
-        }
 
+        if (!validateEmail(data.emailAddress)) {
+            alert("Provide valid email address");
+            error = true;
+        }
+        if (isEmpty(data.firstName)) {
+            alert("Firstname Required");
+            error = true;
+        }
+        if (isEmpty(data.lastName)) {
+            alert("Lastname Required");
+            error = true;
+        }
+        if (isEmpty(data.zipCode)) {
+            alert("zipcode is required");
+            error = true;
+        }
+        if (isEmpty(data.phoneNumber)) {
+            alert("Phone number is required");
+            error = true;
+        }
+        if (isEmpty(data.city)) {
+            alert("City is Required");
+            error = true;
+        }
+        if (isEmpty(data.streetAddress)) {
+            alert("Street Address Is Required");
+            error = true;
+        }
+        if (isEmpty(data.state)) {
+            alert("State Required");
+            error = true;
+        }
         if (isEmpty(data.password)) {
             alert("Password is Required");
             error = true;
@@ -161,8 +211,8 @@ const RegisterScreen = ({ navigation }) => {
                 "groupId": groupIdValue,
                 "extension_attributes": {
                     "plan": data.planValue.toString(),
-                    "manager_id": manager.id,
-                    "manager_email":manager.firstname
+                    "manager_id": data.managerValue.id,
+                    "manager_email": data.managerValue.email
                 },
                 "addresses": [{
                     "defaultShipping": true,
@@ -170,7 +220,9 @@ const RegisterScreen = ({ navigation }) => {
                     "firstname": data.firstName.toString(),
                     "lastname": data.lastName.toString(),
                     "region": {
+                        // "regionCode": "NY",
                         "region": data.state.toString()
+                        // "regionId":43
                     },
                     "postcode": data.zipCode.toString(),
                     "street": [data.streetAddress.toString()],
@@ -181,13 +233,13 @@ const RegisterScreen = ({ navigation }) => {
             },
             "password": data.password.toString()
         })
-            .then(function (response) {
+            .then(function (response) {                
                 setLoader(false);
                 getToken(data.emailAddress.toString(), data.firstName.toString(), data.password.toString())
-                setData({ emailAddress: '' })
+                setData({ emailAddress: '' })                
             })
             .catch(function (error) {
-                console.log(error.response.data.message);
+                console.log(error.response.data.message);               
                 setLoader(false);
             });
     }
@@ -204,7 +256,7 @@ const RegisterScreen = ({ navigation }) => {
             password: password
         })
             .then(function (response) {
-                getCustomer(response.data)
+               getCustomer(response.data)               
             })
             .catch(function (error) {
                 Alert.alert('Invalid User!', 'Username or password is incorrect.', [
@@ -216,49 +268,28 @@ const RegisterScreen = ({ navigation }) => {
     }
 
 
-    const getCustomer = (userToken) => {
+    const getCustomer = (userToken) => {        
         let authToken = "Bearer " + userToken
         axios.get('customers/me',
             {
                 headers: { 'Content-type': 'application/json', 'authorization': authToken }
             }).then(function (response) {
-
-                const userInfo = [{
-                    id: response.data.id,
-                    email: response.data.email,
-                    firstName: response.data.firstname,
-                    lastName: response.data.lastname,
-                    userToken: userToken,
-                    groupId: response.data.group_id,
-                    storeId: response.data.store_id,
-                    websiteId: response.data.website_id,
-                    websiteId: response.data.website_id,
-                    address: response.data.addresses,
-                    plan: response.data.custom_attributes,
-                    default_billing_id: response.data.default_billing,
-                    default_shipping_id: response.data.default_shipping,
-                }]
-                console.log(userInfo);
+                
+                const userInfo = [{ 
+                    id : response.data.id, 
+                    email : response.data.email, 
+                    firstName : response.data.firstname,
+                    lastName : response.data.lastname, 
+                    userToken : userToken, 
+                    groupId : response.data.group_id,
+                    storeId : response.data.store_id,
+                    websiteId : response.data.website_id
+                 }]
                 signIn(userInfo);
 
             }).catch(function (error) {
                 console.log(error)
             });
-    }
-
-    const getSearch = (val) => {
-        setSearchTxt(val)
-        setShowManagerList(false)
-        setShowManagerSearch(true)
-        if (val != '') {
-            const abc = UpdateSearch(val, managerData)
-            setItems(abc);
-        } else {
-            setShowManagerList(true)
-            setShowManagerSearch(false)
-            setItems({})
-        }
-        return false;
     }
 
     const StatusBarHeight = StatusBar.currentHeight
@@ -290,7 +321,7 @@ const RegisterScreen = ({ navigation }) => {
                                     autoCapitalize="none"
                                     onChangeText={(val) => handleInputChange(val, 'firstName')}
                                 />
-
+                                
                             </View>
 
                             <Text style={styles.text_footer}>Last Name</Text>
@@ -429,11 +460,11 @@ const RegisterScreen = ({ navigation }) => {
                                 <Picker
                                     mode="dropdown"
                                     style={styles.pickerContentB2b}
-                                    selectedValue={data.planValue}
+                                    selectedValue={data.planValue} 
                                     onValueChange={(itemValue, itemIndex) =>
-                                        setData({ ...data, planValue: itemValue })
-                                    }
-
+                                        setData({...data,planValue: itemValue})                                        
+                                      }                        
+                                    
                                 >
                                     {
                                         planData.map((item, index) =>
@@ -443,60 +474,29 @@ const RegisterScreen = ({ navigation }) => {
                                 </Picker>
                             </View>
                             {
-                                (data.planValue > 0 && data.planValue < 65) ?
+                                (data.planValue > 0 && data.planValue < 65) ? 
                                     <>
-                                        <Text style={styles.text_footer}>Select Your Manager</Text>
-                                        <View style={styles.pickerWrapper}>
-                                            <Ionicons name="ios-caret-down-sharp" style={styles.pickerIcon} />
-                                            <TextInput
-                                                style={styles.pickerContentB2b}
-                                                defaultValue={manager.firstname}
-                                                onFocus={() => setShowManagerList(true)}
-                                                onChangeText={(val) => getSearch(val)}
-                                            />
-                                        </View>
+                                    <Text style={styles.text_footer}>Select Your Manager</Text>
+                                    <View style={styles.pickerWrapper}>
 
-                                        {showManagerList == true ?
-                                            <View style={[styles.pickerWrapper, { marginTop: 0, borderWidth: 0 }]}>
-                                                {
-                                                   managerData.map((item, index) => {
-                                                    return <TouchableHighlight
-                                                        key={item.id}
-                                                    >
-                                                        <View style={{ backgroundColor: '#f4f4f4' }}>
-                                                            <Text style={{ margin: 5, height: 25 }} onPress={() => {
-                                                                setManager({ id: item.id, firstname: item.firstname })
-                                                                setShowManagerList(false)
-                                                            }
-                                                            }>{item.firstname}</Text>
-                                                        </View>
-                                                    </TouchableHighlight>
-                                                    })
-                                                }
-                                            </View> : null
-                                        }
-                                        {
-                                        items.length > 0 && showManagerSearch ?
-                                            <View style={[styles.pickerWrapper, { marginTop: 0, borderWidth: 0 }]}>
-                                                {
-                                                    items.map((item, index) => {
-                                                        return <TouchableHighlight
-                                                            key={item.id}
-                                                        >
-                                                            <View style={{ backgroundColor: '#f3f3f3' }}>
-                                                                <Text style={{ backgroundColor: '#f3f3f3', margin: 5, height: 25 }} onPress={() => {
-                                                                    setManager({ id: item.id, firstname: item.firstname })
-                                                                    setShowManagerSearch(false)
-                                                                }
-                                                                }>{item.firstname}</Text>
-                                                            </View>
-                                                        </TouchableHighlight>
-                                                    })
-                                                }
+                                        <Ionicons name="ios-caret-down-sharp" style={styles.pickerIcon} />
+                                        <Picker
+                                            mode="dropdown"
+                                            style={styles.pickerContentB2b}
+                                            selectedValue={(data.managerValue) || 1}
+                                            onValueChange={(itemValue, itemIndex) =>
+                                                setData({ ...data, managerValue: itemValue })
+                                            }
+                                        >
 
-                                            </View> : null
-                                        }
-                                    </> : null
+                                            {
+                                                (managerData.length > 0)?managerData.map((item, index) =>
+                                                    <Picker.Item label={item.firstname} value={item.id} key={index} />                                                
+                                                ):null
+                                            }
+
+                                        </Picker>
+                                    </View></> : null
                             }
 
 
@@ -521,7 +521,7 @@ const RegisterScreen = ({ navigation }) => {
                                         id='agreeTerm'
                                         disabled={false}
                                         value={agreeTerm}
-                                        onValueChange={(newValue) =>
+                                        onValueChange={(newValue) => 
                                             setAgreeTerm(newValue)
                                         }
                                         style={styles.checkbox}
@@ -547,7 +547,7 @@ const RegisterScreen = ({ navigation }) => {
                                     maxLength={16}
                                     keyboardType='numeric'
                                 />
-                            </View>
+                            </View>                            
                             <View style={styles.actionCvv}>
                                 <Text style={styles.text_footer_exp}>Exp. Date</Text>
                                 <Text style={styles.text_footer_cvv}>CVV</Text>
@@ -587,11 +587,11 @@ const RegisterScreen = ({ navigation }) => {
                                     <CheckBox
                                         value={sameBillAddress}
                                         disabled={false}
-                                        onValueChange={(newValue) =>
+                                        onValueChange={(newValue) => 
                                             setSameBillAddress(newValue)
                                         }
-                                        id='sameBillAddress'
-                                        name='sameBillAddress'
+                                        id = 'sameBillAddress'
+                                        name = 'sameBillAddress'
                                         tintColors={{ true: '#6379FF', false: 'black' }}
                                         style={styles.checkbox}
                                     />
@@ -607,7 +607,7 @@ const RegisterScreen = ({ navigation }) => {
                                     <Text style={[styles.textSign, {
                                         color: '#fff'
                                     }]}>Submit</Text>
-                                </TouchableOpacity>
+                                </TouchableOpacity>                               
                             </View>
                         </ScrollView>
 

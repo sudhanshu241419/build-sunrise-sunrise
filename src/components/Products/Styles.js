@@ -5,8 +5,7 @@ const labelfontFamily = Platform.OS === 'ios' ? 'Segoe UI,Bold' : 'sans-serif-me
 const letterSpacing = 2;
 export default StyleSheet.create({
     title: {
-        color: '#000000',
-        height: 27,
+        color: '#000000',        
         fontSize: 20,
         textAlign: 'left',
         paddingLeft: 10,
@@ -29,7 +28,7 @@ export default StyleSheet.create({
 
   flex: { flex: 1 },
 
-  textSize: { height: 19, fontSize: 14 },
+  textSize: {fontSize: 14 },
 
   textColor: { color: '#383838', textAlign: 'left' },
 

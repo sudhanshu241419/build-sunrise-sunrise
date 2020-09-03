@@ -13,7 +13,7 @@ import {Picker} from '@react-native-community/picker';
 import { useTheme } from 'react-native-paper';
 import styles from './styles'
 import { isEmpty } from '../../utils/validation';
-import {getUser } from '../../utils/api'
+import {getUser,getAccessToken} from '../../utils/api'
 import axios from "../../apiConfig";
 import ActivityIndicator from 'react-native-loading-spinner-overlay'
 
@@ -36,9 +36,10 @@ const addBusiness = ({navigation}) => {
   const [typeItem, setType] = React.useState({});
   const [relationItem, setRelationItem] = React.useState({});
   const [offerItem, setOfferItem] = React.useState({});
-
+  const [userToken, setUserToken] = React.useState(null);
   const { colors } = useTheme();
   React.useEffect(() => {
+    getAccessToken().then((value)=>setUserToken(value));
     getUser().then((value) => {
         setCustomerId(value.userId)
         setGroupId(value.groupId)

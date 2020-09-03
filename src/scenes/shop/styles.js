@@ -5,7 +5,7 @@ const labelfontFamily = Platform.OS === 'ios' ? 'Segoe UI,Bold' : 'sans-serif-me
 const letterSpacing = 2;
 export default StyleSheet.create({
   container: {
-    flex: 1,   
+    flex: 1,
     textAlign: 'center',
   },
 
@@ -42,7 +42,7 @@ export default StyleSheet.create({
 
   flex: { flex: 1 },
 
-  textSize: { height: 19, fontSize: 14 },
+  textSize: {fontSize: 14 },
 
   textColor: { color: '#383838', textAlign: 'left' },
 
@@ -60,15 +60,13 @@ export default StyleSheet.create({
 
   suggestionContent: {
     fontSize: 15,
-    color: '#000000',
-    height: 19,
-    marginTop:2,
+    color: '#000000',    
+    marginTop: 2,
     marginLeft: 100
   },
 
   shopAllDep: {
-    color: '#000000',
-    height: 27,
+    color: '#000000',   
     fontSize: 20,
     textAlign: 'left',
     paddingLeft: 30,
@@ -76,7 +74,7 @@ export default StyleSheet.create({
   },
 
   services: {
-    color: '#707070', height: 27, fontSize: 20, textAlign: 'left', paddingLeft: 30, marginTop: 20
+    color: '#707070', fontSize: 20, textAlign: 'left', paddingLeft: 30, marginTop: 20
   },
 
   blade: { backgroundColor: "#6379FF", padding: 5, height: 40 },
@@ -84,12 +82,65 @@ export default StyleSheet.create({
   bladeText: {
     fontSize: 16, color: '#fff', paddingTop: 3, marginLeft: 6, height: 25
   },
-  
+
   bladeIcon: {
     color: '#fff', fontSize: 20, bottom: 10, top: 10, position: "absolute", right: 0
   },
 
- proColSec:{ flex: 1, width: "50%", marginLeft: 70 }
+  proColSec: { flex: 1, width: "50%", marginLeft: 70 },
+
+  textInput: {
+    color: '#000',
+    fontSize: 15,
+    borderRadius: 10,
+    width: "90%",
+    marginLeft: 28
+  },
+  searchWrapper: {
+    borderColor: "#6379FF",
+    borderWidth: 1,
+    backgroundColor: "#fff",
+    alignContent: 'center',
+    marginTop: 10,
+    width: "95%",
+    marginLeft: 10,
+    borderRadius: 5,
+    height: 40,
+  },
+
+  searchIcon: {
+    position: "absolute",
+    top: 7,
+    left: 4,
+    fontSize: 24,
+    color: "#000000"
+  },
+  cameraIcon: {
+    position: "absolute",
+    bottom: 10,
+    top: 10,
+    right: 15,
+    fontSize: 19,
+    color: "#838383"
+  },
+  micIcon: {
+    position: "absolute",
+    bottom: 10,
+    top: 11,
+    right: 0,
+    fontSize: 15,
+    color: "#838383"
+  },
+  master: {
+    borderWidth: 1,
+    margin: 5,
+    marginTop: 10,
+    justifyContent: 'space-around',
+    height: 'auto'
+},
+
+productHeading: { fontSize: 25, color: '#000000', paddingTop: 3, marginLeft: 6, fontWeight: 'bold' },
+productSubHeading: { fontSize: 20, color: '#707070', paddingTop: 3, marginLeft: 6, fontWeight: 'bold' },
 
 
 }) 

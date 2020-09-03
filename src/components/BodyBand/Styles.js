@@ -16,6 +16,6 @@ export default StyleSheet.create({
               
    },
 
-   bandText:{ fontSize:16, paddingTop:3,marginLeft:6,height:25,fontWeight:'bold'},
+   bandText:{ fontSize:16, paddingTop:3,marginLeft:6,fontWeight:'bold'},
    bandIcon:{ fontSize:20,bottom: 10,top:10, position: "absolute",right:0}
 })
