@@ -31,16 +31,29 @@ const LoginScreen = ({ navigation, checkLogin, currentUser }) => {
     const [visible, setVisible] = React.useState(false);
     const { signIn } = React.useContext(AuthContext);
     const [userToken, setUserToken] = React.useState(null);
-    const [showLoader, setLoader] = React.useState(false)
-
+    const [showLoader, setLoader] = React.useState(false);
+    const [planData, setPlan] = React.useState({});
     const onDismissSnackBar = () => setVisible(false);
+
 
     React.useEffect(() => {
         getAccessToken().then((value) => setUserToken(value));
+        getPlan()
+
         if (currentUser) {
             setVisible(!visible);
         }
     }, [currentUser]);
+    const getPlan = () => {
+        axios.get('krypson-plan/plan/search?searchCriteria[pageSize]=10')
+            .then(function (response) {
+                setPlan(response.data.items);
+                return true
+            })
+            .catch(function (error) {
+                console.warn(error);
+            });
+    }
 
     const { colors } = useTheme();
 
@@ -126,6 +139,7 @@ const LoginScreen = ({ navigation, checkLogin, currentUser }) => {
     }
 
 
+
     const getCustomer = (userToken) => {
 
         let authToken = "Bearer " + userToken
@@ -143,17 +157,31 @@ const LoginScreen = ({ navigation, checkLogin, currentUser }) => {
                     groupId: response.data.group_id,
                     storeId: response.data.store_id,
                     websiteId: response.data.website_id,
-                    address:response.data.addresses,
-                    plan:response.data.custom_attributes,
-                    default_billing_id:response.data.default_billing,
-                    default_shipping_id:response.data.default_shipping,
+                    address: response.data.addresses,
+                    plan: response.data.custom_attributes,
+                    default_billing_id: response.data.default_billing,
+                    default_shipping_id: response.data.default_shipping,
+                    plan_id: getPlanId(response.data.custom_attributes)
                 }]
+                console.log(userInfo)
+
                 signIn(userInfo);
                 setLoader(false);
 
             }).catch(function (error) {
                 console.log(error)
             });
+    }
+
+    const getPlanId = (planAtr) => {
+        const planValue = planAtr[0].value;
+        const planid = planData.filter((item) => {
+            if (item.plan_price == planValue) {
+                return item.plan_id
+            }
+        })
+        
+        return planid[0].plan_id
     }
 
     return (
@@ -173,6 +201,7 @@ const LoginScreen = ({ navigation, checkLogin, currentUser }) => {
                 <View style={styles.action}>
                     <Feather name="user" style={styles.icon_style} size={20} color="#63636333" />
                     <TextInput
+                        autoFocus={true}
                         placeholder="E-mail"
                         placeholderTextColor="#2b2828"
                         style={[styles.textInput, {
@@ -252,7 +281,7 @@ const LoginScreen = ({ navigation, checkLogin, currentUser }) => {
                 </View>
                 <View style={styles.button}>
                     <TouchableOpacity
-                        style={styles.touchsignIn}                        
+                        style={styles.touchsignIn}
                         onPress={() => loginHandle()}
                     >
                         <LinearGradient

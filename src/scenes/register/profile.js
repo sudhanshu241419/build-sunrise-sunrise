@@ -6,8 +6,6 @@ import {
     TextInput,
     ScrollView,
     StatusBar,
-    StyleSheet,
-    Alert,
     TouchableHighlight
 } from 'react-native';
 import { useTheme } from 'react-native-paper';
@@ -20,7 +18,7 @@ import ActivityIndicator from 'react-native-loading-spinner-overlay'
 import { getUser, getAccessToken } from '../../utils/api'
 import { UpdateSearch, handleFormValidation } from './registerFunction'
 
-const RegisterScreen = ({ navigation }) => {
+const RegisterScreen = (navigation, props) => {
     const [data, setData] = React.useState({
         firstName: '',
         lastName: '',
@@ -39,15 +37,13 @@ const RegisterScreen = ({ navigation }) => {
         exp: '',
         cvv: '',
         planValue: 0,
-        managerValue: 1,
+        managerValue: '',
+        website_id: null
 
     });
     const [showLoader, setLoader] = React.useState(false)
     const [userToken, setUserToken] = React.useState(null)
-    const { signIn } = React.useContext(AuthContext);
-    const { colors } = useTheme();
-    const [agreeTerm, setAgreeTerm] = React.useState(true);
-    const [sameBillAddress, setSameBillAddress] = React.useState(true);
+    const { signIn } = React.useContext(AuthContext);  
     const [planData, setPlan] = React.useState([
         {
             "plan_id": "1",
@@ -60,19 +56,23 @@ const RegisterScreen = ({ navigation }) => {
     const [managerData, setManagerData] = React.useState({});
     const [showManagerList, setShowManagerList] = React.useState(false)
     const [showManagerSearch, setShowManagerSearch] = React.useState(false)
-    const [manager, setManager] = React.useState({
-        id: '',
-        firstname: '',
-    })
+    const [manager, setManager] = React.useState({id: '', firstname: ''})
     const groupId = { '0': '1', '35': '6', '65': '5', '99': '4' }
     const [items, setItems] = React.useState({});
     const [searchTxt, setSearchTxt] = React.useState(null);
 
-    React.useEffect(() => {
-        getAccessToken().then((value) => setUserToken(value));
+    React.useEffect(() =>{       
+        getPlan()
+        getManager()
+        getCustomer()
+    },[]);
+
+
+    const getCustomer = () => {
+        getAccessToken().then((value) => { value != null ? setUserToken(value) : null });
+
         getUser().then((value) => {
-            setData({
-                ...data,
+            value != null ? setData({
                 userId: value.userId,
                 firstName: value.firstName,
                 lastName: value.lastName,
@@ -84,22 +84,23 @@ const RegisterScreen = ({ navigation }) => {
                 state: value.userDetails.address[0].region.region,
                 zipCode: value.userDetails.address[0].postcode,
                 planValue: value.userDetails.plan[0].value,
-                managerValue: value.userDetails.plan[2].value
-            })
+                managerValue: value.userDetails.plan[2].value,
+                website_id: value.userDetails.websiteId
+            }) : null
+            console.log(value.userDetails.plan)
+            setManager({ id: value.userDetails.plan[2].value, firstname: value.userDetails.plan[1].value })
         });
-        getPlan()
-        getManager()
-    }, []);
+    }
+
 
     const getPlan = () => {
         setLoader(true);
         axios.get('krypson-plan/plan/search?searchCriteria[pageSize]=10')
             .then(function (response) {
-                setPlan(response.data.items);
-                return true
+                setPlan(response.data.items);                
             })
             .catch(function (error) {
-                console.warn(error);
+                console.log(error);
             });
     }
 
@@ -108,10 +109,10 @@ const RegisterScreen = ({ navigation }) => {
         axios.get('customers/search?searchCriteria[filter_groups][0][filters][1][field]=group_id&searchCriteria[filter_groups][0][filters][1][value]=4&searchCriteria[filter_groups][0][filters][1][condition_type]=eq')
             .then(function (response) {
                 setManagerData(response.data.items);
-                setManager({id: response.data.items[0].id, firstname: response.data.items[0].firstname })
+                //setManager({ id: response.data.items[0].id, firstname: response.data.items[0].firstname })
 
                 setLoader(false);
-                return true;
+               
             })
             .catch(function (error) {
                 console.log(error);
@@ -128,19 +129,6 @@ const RegisterScreen = ({ navigation }) => {
         })
     }
 
-    const handlePasswordChange = (val) => {
-        setData({
-            ...data,
-            password: val
-        });
-    }
-
-    const handleConfirmPasswordChange = (val) => {
-        setData({
-            ...data,
-            confirmPassword: val
-        });
-    }
 
 
     const handleUpdate = () => {
@@ -152,10 +140,12 @@ const RegisterScreen = ({ navigation }) => {
         }
 
         const customer = {
+            "id": data.userId,
             "email": data.emailAddress.toString(),
             "firstname": data.firstName.toString(),
             "lastname": data.lastName.toString(),
             "groupId": groupIdValue,
+            "website_id": data.website_id,
             "extension_attributes": {
                 "plan": data.planValue.toString(),
                 "manager_id": manager.id,
@@ -166,10 +156,8 @@ const RegisterScreen = ({ navigation }) => {
                 "defaultBilling": true,
                 "firstname": data.firstName.toString(),
                 "lastname": data.lastName.toString(),
-                "region": {
-                    // "regionCode": "NY",
+                "region": {                    
                     "region": data.state.toString()
-                    // "regionId":43
                 },
                 "postcode": data.zipCode.toString(),
                 "street": [data.streetAddress.toString()],
@@ -178,8 +166,13 @@ const RegisterScreen = ({ navigation }) => {
                 "countryId": "US"
             }]
         }
-        console.log("update", customer)
+
         console.log("userId", data.userId)
+        console.log('customers/' + data.userId)
+        const Data = {
+            "customer": customer
+        }
+        console.log("update", Data)
 
         setLoader(true)
         axios.put('customers/' + data.userId, {
@@ -218,6 +211,7 @@ const RegisterScreen = ({ navigation }) => {
                     default_shipping_id: true,
                 }]
                 signIn(userInfo);
+                setLoader(false)
             })
             .catch(function (error) {
                 alert(error.response.data.message);
@@ -229,11 +223,13 @@ const RegisterScreen = ({ navigation }) => {
     }
 
     const getSearch = (val) => {
+        setManager({...manager,firstname:val})
         setSearchTxt(val)
         setShowManagerList(false)
         setShowManagerSearch(true)
         if (val != '') {
             const abc = UpdateSearch(val, managerData)
+            console.log(abc);
             setItems(abc);
         } else {
             setShowManagerList(true)
@@ -249,7 +245,7 @@ const RegisterScreen = ({ navigation }) => {
     return (
 
         <View style={styles.container}>
-
+           
             <StatusBar />
 
             <View style={styles.header}>
@@ -267,7 +263,7 @@ const RegisterScreen = ({ navigation }) => {
                     <TextInput
                         name="firstName"
                         id="firstName"
-                        defaultValue={data.firstName}
+                        value={data.firstName}
                         style={styles.textInput}
                         autoCapitalize="none"
                         onChangeText={(val) => handleInputChange(val, 'firstName')}
@@ -281,7 +277,7 @@ const RegisterScreen = ({ navigation }) => {
                     <TextInput
                         name="lastName"
                         id="lastName"
-                        defaultValue={data.lastName}
+                        value={data.lastName}
                         style={styles.textInput}
                         autoCapitalize="none"
                         onChangeText={(val) => handleInputChange(val, 'lastName')}
@@ -295,7 +291,7 @@ const RegisterScreen = ({ navigation }) => {
                     <TextInput
                         name="phoneNumber"
                         id="phoneNumber"
-                        defaultValue={data.phoneNumber}
+                        value={data.phoneNumber}
                         style={styles.textInput}
                         autoCapitalize="none"
                         onChangeText={(val) => handleInputChange(val, 'phoneNumber')}
@@ -311,7 +307,7 @@ const RegisterScreen = ({ navigation }) => {
                     <TextInput
                         name="emailAddress"
                         id="emailAddress"
-                        defaultValue={data.emailAddress}
+                        value={data.emailAddress}
                         style={styles.textInput}
                         autoCapitalize="none"
                         onChangeText={(val) => handleInputChange(val, 'emailAddress')}
@@ -326,7 +322,7 @@ const RegisterScreen = ({ navigation }) => {
                     <TextInput
                         name="streetAddress"
                         id="streetAddress"
-                        defaultValue={data.streetAddress}
+                        value={data.streetAddress}
                         style={styles.textInput}
                         autoCapitalize="none"
                         onChangeText={(val) => handleInputChange(val, 'streetAddress')}
@@ -334,19 +330,19 @@ const RegisterScreen = ({ navigation }) => {
 
                 </View>
 
-                <Text style={styles.text_footer}>Suite Or Appartment</Text>
+                {/* <Text style={styles.text_footer}>Suite Or Appartment</Text>
                 <View style={styles.action}>
 
                     <TextInput
                         name="suite"
                         id="suite"
-                        defaultValue={data.suite}
+                        value={data.suite}
                         style={styles.textInput}
                         autoCapitalize="none"
                         onChangeText={(val) => handleInputChange(val, 'suite')}
                     />
 
-                </View>
+                </View> */}
 
                 <Text style={styles.text_footer}>City</Text>
                 <View style={styles.action}>
@@ -354,7 +350,7 @@ const RegisterScreen = ({ navigation }) => {
                     <TextInput
                         name="city"
                         id="city"
-                        defaultValue={data.city}
+                        value={data.city}
                         style={styles.textInput}
                         autoCapitalize="none"
                         onChangeText={(val) => handleInputChange(val, 'city')}
@@ -368,7 +364,7 @@ const RegisterScreen = ({ navigation }) => {
                     <TextInput
                         name="state"
                         id="state"
-                        defaultValue={data.state}
+                        value={data.state}
                         style={styles.textInput}
                         autoCapitalize="none"
                         onChangeText={(val) => handleInputChange(val, 'state')}
@@ -382,7 +378,7 @@ const RegisterScreen = ({ navigation }) => {
                     <TextInput
                         name="zipCode"
                         id="zipCode"
-                        defaultValue={data.zipCode}
+                        value={data.zipCode}
                         style={styles.textInput}
                         autoCapitalize="none"
                         onChangeText={(val) => handleInputChange(val, 'zipCode')}
@@ -419,7 +415,7 @@ const RegisterScreen = ({ navigation }) => {
                                 <Ionicons name="ios-caret-down-sharp" style={styles.pickerIcon} />
                                 <TextInput
                                     style={styles.pickerContentB2b}
-                                    defaultValue={manager.firstname}
+                                    value={manager.firstname}
                                     onFocus={() => setShowManagerList(true)}
                                     onChangeText={(val) => getSearch(val)}
                                 />
@@ -467,8 +463,6 @@ const RegisterScreen = ({ navigation }) => {
                             }
                         </> : null
                 }
-
-
 
                 <View style={styles.button}>
                     <TouchableOpacity

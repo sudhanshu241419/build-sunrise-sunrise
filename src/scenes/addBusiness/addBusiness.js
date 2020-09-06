@@ -6,6 +6,7 @@ import {
   ScrollView, 
   StatusBar, 
   TouchableOpacity,  
+  Image
   } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -16,6 +17,7 @@ import { isEmpty } from '../../utils/validation';
 import {getUser,getAccessToken} from '../../utils/api'
 import axios from "../../apiConfig";
 import ActivityIndicator from 'react-native-loading-spinner-overlay'
+import ImagePicker from 'react-native-image-picker';
 
 const addBusiness = ({navigation}) => {
   const [data, setData] = React.useState({
@@ -29,6 +31,15 @@ const addBusiness = ({navigation}) => {
     relationShip:'Personal Relationship',  
     offer:'Real Estate',
   });
+
+  const options = {
+    title: 'Select a logo',
+    takePhotoButtonTitle:'Take a logo',
+    chooseFromLibraryButtonTitle:'Choose from gallery',
+    quality:1
+  };
+  const [logoSource,setLogoSource] = React.useState(null);
+  const [base64Source,setBase64Source] = React.useState(null);
   
   const [showLoader, setLoader] = React.useState(false);
   const [customerId, setCustomerId] = React.useState();
@@ -123,27 +134,59 @@ const addBusiness = ({navigation}) => {
         "customer_id":customerId.toString(),
         "customer_group_id" : groupId.toString(),
         "status":1,
-        "note":(data.notes==null)?"":data.notes.toString()
+        "note":(data.notes==null)?"":data.notes.toString(),
+        "image":(base64Source==null)?'':base64Source
     }
-    
+    console.log(businessData);
     axios.post('krypson-business/busniess', 
         {"busniess": businessData}
-    ).then(function (response) {              
+    ).then(function (response) {  
+        console.log(response);            
         setLoader(false);
         alert("Bussiness Details has been added successfuly")             
         setData({businessName: '',address: '',emailAddress:'',phoneNumber: '',website:'',notes:'',  
         type:'Services', relationShip:'Personal Relationship', offer:'Real Estate',})
+        setBase64Source(null)
+        setLogoSource(null)
         return true;
         //navigation.navigate("Dashboard");
     })
     .catch(function (error) {
-        console.log(error);
+        console.log(error.response.data.message);
         alert(error.response.data.message)
         setLoader(false);
     });
     
     return false   
 
+}
+
+const slectePhoto =()=>{
+    ImagePicker.showImagePicker(options, (response) => {
+        console.log('Response = ', response);       
+      
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        } else if (response.error) {
+          console.log('ImagePicker Error: ', response.error);
+        } else if(response.fileSize > 50000){
+            alert("Logo size should be less than 50KB");
+            return false
+        }else if(response.type=="image/jpg" || response.type=="image/jpeg" || response.type=="image/png" || response.type=="image/gif") {
+          const source = { uri: response.uri };
+          
+          const base64Uri = JSON.stringify({
+              "file":response.fileName,
+              "content":{"base64_encoded_data":'data:image/jpeg;base64' + response.data},
+               "name":response.fileName,
+               "type":response.type});
+          setBase64Source(base64Uri);
+          setLogoSource(source);
+        }else{
+            alert("Logo image should be jpg/png/gif")
+            return false
+        }
+      });
 }
   
 
@@ -328,6 +371,16 @@ const addBusiness = ({navigation}) => {
                     autoCapitalize="none"                         
                     onChangeText={(val) => setData({...data,notes:val})}  
                 />                
+            </View>
+
+            <Text style={styles.logo_text}>Select Business Logo</Text>  
+            <View style={styles.logoContainer}>
+              <Image style={styles.logo} source={logoSource !=null?logoSource:require('../../assets/noimage.png')}/>
+            <TouchableOpacity style={styles.touch}                
+            onPress = {slectePhoto}>            
+                  <Text style={styles.select}>Select</Text>
+
+            </TouchableOpacity>            
             </View>
                                  
             <View style={styles.button}>

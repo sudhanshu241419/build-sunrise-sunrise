@@ -159,5 +159,32 @@ export default StyleSheet.create({
         marginLeft: 30,
         fontWeight: 'bold',
         fontSize: 18,
+    },
+    logo:{width:200,height:150,marginLeft:105},
+    business_logo: {
+        color: '#000',
+        fontWeight: 'bold',
+        fontSize: 18,
+        marginLeft: 60,        
+        marginTop: 10,
+        fontFamily: labelfontFamily,
+    },
+    logoContainer: {
+       textAlign: "center",
+       
+    },
+    logo_text:{
+        color: '#000',
+        fontSize: 18,
+        fontWeight:'bold',
+        textAlign: "center",
+        marginBottom: 5,
+        marginTop: 10,
+        fontFamily: labelfontFamily,
+    },
+    touch:{height:40,width:'100%',textAlign:'center',marginLeft:150  },
+    select:{
+        marginTop:5,color: '#fff',fontSize:15,justifyContent:'space-between',backgroundColor: '#6379FF',height:30,width:100,textAlign:'center',borderRadius:5,paddingTop:4
     }
+
 });  

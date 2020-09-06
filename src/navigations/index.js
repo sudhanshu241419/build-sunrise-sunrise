@@ -13,11 +13,11 @@ import AllCategories from '../scenes/shop/Categories'
 import { Image, View, Text, StyleSheet, SafeAreaView } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import { Avatar, Title, Caption, Drawer} from 'react-native-paper'
+import { Avatar, Title, Caption, Drawer } from 'react-native-paper'
 import styles from './styles';
 import DashboardScreen from '../scenes/dashboard';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Feather from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient'
 import AddBusinessScreen from '../scenes/addBusiness/addBusiness'
 import EBusinessCard from '../scenes/shareEBusinessCard'
@@ -25,48 +25,49 @@ import RateYourPurchase from '../scenes/rateYourPurchase'
 import Address from '../scenes/rateYourPurchase/address'
 import MyCustomer from '../scenes/customerOfManager'
 import { AuthContext } from '../components/context';
-import {getUser } from '../utils/api'
+import { getUser, getAccessToken } from '../utils/api'
 import PastOrder from '../scenes/rateYourPurchase/pastOrder'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import ProfileScreen from '../scenes/register/profile'
+import BusinessListScreen from '../scenes/addBusiness/businessList'
 
 const OrderTopTab = createMaterialTopTabNavigator();
 
-const OrderTabs = ()=> {
-  return (
-    <OrderTopTab.Navigator tabBarOptions={{
-        activeTintColor: '#6379FF',
-        inactiveTintColor:'#000',
-        tabStyle: { flexdirection:'row',justifyContent:'space-around',height:45},
-        scrollEnabled:true,
-        labelStyle: { fontSize: 12,color: '#000000',fontWeight:'bold' },
-        style: { backgroundColor: '#fff', },
-      }} lazy={true}>
-      <OrderTopTab.Screen name="Current Order" component={RateYourPurchase} />
-      <OrderTopTab.Screen name="Past Order" component={PastOrder} />
-      <OrderTopTab.Screen name="Address" component={Address} />
-      <OrderTopTab.Screen name="Payment" component={PastOrder} />
-      
-      
-    </OrderTopTab.Navigator>
-  );
+const OrderTabs = () => {
+    return (
+        <OrderTopTab.Navigator tabBarOptions={{
+            activeTintColor: '#6379FF',
+            inactiveTintColor: '#000',
+            tabStyle: { flexdirection: 'row', justifyContent: 'space-around', height: 45 },
+            scrollEnabled: true,
+            labelStyle: { fontSize: 12, color: '#000000', fontWeight: 'bold' },
+            style: { backgroundColor: '#fff', },
+        }} lazy={true}>
+            <OrderTopTab.Screen name="Current Order" component={RateYourPurchase} />
+            <OrderTopTab.Screen name="Past Order" component={PastOrder} />
+            <OrderTopTab.Screen name="Address" component={Address} />
+            <OrderTopTab.Screen name="Payment" component={PastOrder} />
+
+
+        </OrderTopTab.Navigator>
+    );
 }
 
 
 const ShopStackTopNavigation = createStackNavigator();
 
-const ShopTabs = ()=> {
-  return (    
-    <ShopStackTopNavigation.Navigator headerMode='none' screenOptions={{gestureEnabled:true,gestureDirection:"horizontal"}}>
-        <ShopStackTopNavigation.Screen name="Product" component={ShopScreen} />
-        <ShopStackTopNavigation.Screen name="Service" component={Service} />
-        <ShopStackTopNavigation.Screen name="Marketing" component={Marketing} />
-        <ShopStackTopNavigation.Screen name="RateYourPurchase" component={RateYourPurchase} />
-        <ShopStackTopNavigation.Screen name="Deals" component={Deals} />
-        <ShopStackTopNavigation.Screen name="Categories" Title="All Categories" component={AllCategories} />
-        <ShopStackTopNavigation.Screen name="Search" Title="Search" component={Search} />        
-    </ShopStackTopNavigation.Navigator>
-  );
+const ShopTabs = () => {
+    return (
+        <ShopStackTopNavigation.Navigator headerMode='none' screenOptions={{ gestureEnabled: true, gestureDirection: "horizontal" }}>
+            <ShopStackTopNavigation.Screen name="Product" component={ShopScreen} />
+            <ShopStackTopNavigation.Screen name="Service" component={Service} />
+            <ShopStackTopNavigation.Screen name="Marketing" component={Marketing} />
+            <ShopStackTopNavigation.Screen name="RateYourPurchase" component={RateYourPurchase} />
+            <ShopStackTopNavigation.Screen name="Deals" component={Deals} />
+            <ShopStackTopNavigation.Screen name="Categories" Title="All Categories" component={AllCategories} />
+            <ShopStackTopNavigation.Screen name="Search" Title="Search" component={Search} />
+        </ShopStackTopNavigation.Navigator>
+    );
 }
 
 
@@ -82,7 +83,7 @@ const EBusinessCardStack = createStackNavigator();
 const RateYourPurchaseStack = createStackNavigator();
 const MyCustomerStack = createStackNavigator();
 const UpdateProfileStack = createStackNavigator();
-
+const BusinessListStack = createStackNavigator();
 
 const DrawerNav = createDrawerNavigator();
 
@@ -113,6 +114,32 @@ const LandingStackSreen = ({ navigation }) => (
 
     </LandingStack.Navigator>
 )
+
+const BusinessListStackSreen = ({ navigation }) => (
+    <BusinessListStack.Navigator
+        screenOptions={{
+            headerBackground: props => <GradientHeader {...props} />,
+            headerStyle: {
+                backgroundColor: '#1B2356',
+                height: 65,
+            },
+        }}
+    >
+        <BusinessListStack.Screen
+            name="BusinessList"
+            component={BusinessListScreen}
+            options={{
+                headerTitleAlign: 'center',
+                headerTitle: props => <LogoTitle {...props} />,
+                headerLeft: () => (
+                    <Icon.Button name="menu" size={25} backgroundColor="transparent" onPress={() => navigation.openDrawer()}></Icon.Button>
+                )
+            }}
+        />
+    </BusinessListStack.Navigator>
+)
+
+
 const DashboardStackSreen = ({ navigation }) => (
     <DashboardStack.Navigator
         screenOptions={{
@@ -145,7 +172,7 @@ const ShopStackScreen = ({ navigation }) => (
                 backgroundColor: '#1B2356',
                 height: 65,
             },
-            
+
         }}
     >
         <ShopStack.Screen
@@ -153,7 +180,7 @@ const ShopStackScreen = ({ navigation }) => (
             //component={ShopScreen}
             children={ShopTabs}
             options={{
-                title:'Shop',
+                title: 'Shop',
                 headerTitleAlign: 'center',
                 headerTitle: props => <LogoTitle {...props} />,
                 headerLeft: () => (<Icon.Button name="menu" size={25}
@@ -315,7 +342,7 @@ const updateProfileScreen = ({ navigation }) => (
     >
         <UpdateProfileStack.Screen
             name="Profile"
-            component={ProfileScreen}            
+            component={ProfileScreen}
             options={{
                 headerTitleAlign: 'center',
                 headerTitle: props => <LogoTitle {...props} />,
@@ -358,11 +385,51 @@ function LogoTitle() {
     );
 }
 
+const withAddBusiness = [
+    { "level": "Home", "link": "Home", "status": 1 },
+    { "level": "Dashboard", "link": "Dashboard", "status": 1 },
+    { "level": "Add Referrals", "link": "AddReferrals", "status": 1 },
+    { "level": "Referrals History", "link": "ReferralHistory", "status": 1 },
+    { "level": "Soap Now", "link": "Shop", "status": 1 },
+    { "level": "Rate Your Purchase", "link": "RateYourPurchase", "status": 1 },
+    { "level": "Your E-Business Card", "link": "EBusinessCard", "status": 1 },
+    { "level": "Add Business", "link": "AddBusiness", "status": 1 },
+    { "level": "Business List", "link": "BusinessList", "status": 1 },
+    { "level": "My Customer", "link": "MyCustomer", "status": 1 },
+    { "level": "Write a Review", "link": "", "status": 1 },
+    { "level": "Share", "link": "", "status": 1 },
+    { "level": "Your E-Store", "link": "", "status": 1 },
+    { "level": "How App Works", "link": "", "status": 1 },
+    { "level": "Contact Support", "link": "", "status": 1 },
+    { "level": "Privacy Policy", "link": "", "status": 1 },
+    { "level": "Sign Out", "link": "signout", "status": 1 }
+]
+
+const withoutAddBusiness = [
+    { "level": "Home", "link": "Home", "status": 1 },
+    { "level": "Dashboard", "link": "Dashboard", "status": 1 },
+    { "level": "Add Referrals", "link": "AddReferrals", "status": 1 },
+    { "level": "Referrals History", "link": "ReferralHistory", "status": 1 },
+    { "level": "Soap Now", "link": "Shop", "status": 1 },
+    { "level": "Rate Your Purchase", "link": "RateYourPurchase", "status": 1 },
+    { "level": "Your E-Business Card", "link": "EBusinessCard", "status": 1 },    
+    { "level": "Business List", "link": "BusinessList", "status": 1 },
+    { "level": "My Customer", "link": "MyCustomer", "status": 1 },
+    { "level": "Write a Review", "link": "", "status": 1 },
+    { "level": "Share", "link": "", "status": 1 },
+    { "level": "Your E-Store", "link": "", "status": 1 },
+    { "level": "How App Works", "link": "", "status": 1 },
+    { "level": "Contact Support", "link": "", "status": 1 },
+    { "level": "Privacy Policy", "link": "", "status": 1 },
+    { "level": "Sign Out", "link": "signout", "status": 1 }
+]
+
 const DrawerContent = (props) => {
-    const { signOut, toggleTheme } = React.useContext(AuthContext);  
+    const { signOut, toggleTheme } = React.useContext(AuthContext);
+
 
     return (
-        <SafeAreaView style={[styles.safeArea,styles.flex]}>
+        <SafeAreaView style={[styles.safeArea, styles.flex]}>
             <DrawerContentScrollView {...props}>
                 <View style={styles.flex}>
                     <View style={styles.userInfoSection}>
@@ -372,245 +439,52 @@ const DrawerContent = (props) => {
                             />
                         </View>
                         <View style={{ alignItems: 'center' }}>
-                            <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-                            <Title style={[styles.title,styles.font14]}>
-                                {props.firstName} {props.lastName}
-                            </Title> 
-                            <FontAwesome name="edit" title="Edit" style={{color:"#fff",fontSize:20,margin:8}} onPress={() => { props.navigation.navigate('Profile') }}/>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <Title style={[styles.title, styles.font14]}>
+                                    {props.firstName} {props.lastName}
+                                </Title>
+                                <Feather name="edit-2" title="Edit" style={{ color: "#fff", fontSize: 20, margin: 8 }} 
+                                onPress={() => { props.navigation.navigate('Profile',{
+                                    itemId: 86,
+                                    otherParam: 'anything you want here',
+                                  }) }}  />
                             </View>
-                            <Title style={[styles.title,styles.font18]}>VIP Manager</Title>
-                            <Caption style={[styles.title,styles.font14,{marginBottom: 30 }]}>{props.email}</Caption>
+                            <Title style={[styles.title, styles.font18]}>VIP Manager</Title>
+                            <Caption style={[styles.title, styles.font14, { marginBottom: 30 }]}>{props.email}</Caption>
                         </View>
                     </View>
                 </View>
                 <Drawer.Section style={styles.drawerSection}>
-                    <View style={[styles.flexdirection,styles.width90]}>
-                        <View style={[styles.flexdirection,styles.width100]}>
-                            <DrawerItem
-                                label="Home"
-                                onPress={() => { props.navigation.navigate('Home') }}
-                                labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={styles.darkBlue}
-                            />
-                        </View>
-                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
-                            <Ionicons name="send-sharp" size={14} color="#ffffff" />
-                        </View>
-                    </View>
-                  
-                    <View style={[styles.flexdirection,styles.width90]}>
-                        <View style={[styles.flexdirection,styles.width100]}>
-                            <DrawerItem
-                                label="Add Referrals"
-                                onPress={() => { props.navigation.navigate('AddReferrals') }}
-                                labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={styles.lightBlue}
-                            />
-                        </View>
-                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
-                            <Ionicons name="send-sharp" size={14} color="#ffffff" />
-                        </View>
-                    </View>
-                    <View style={[styles.flexdirection,styles.width90]}>
-                        <View style={[styles.flexdirection,styles.width100]}>
-                            <DrawerItem
-                                label="Referrals History"
-                                onPress={() => { props.navigation.navigate('ReferralHistory') }}
-                                labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={styles.darkBlue}
-                            />
-                        </View>
-                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
-                            <Ionicons name="send-sharp" size={14} color="#ffffff" />
-                        </View>
-                    </View>
-                    <View style={[styles.flexdirection,styles.width90]}>
-                        <View style={[styles.flexdirection,styles.width100]}>
-                            <DrawerItem
-                                label="Soap Now"
-                                onPress={() => { props.navigation.navigate('Shop') }}
-                                labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={styles.lightBlue}
-                            />
-                        </View>
-                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
-                            <Ionicons name="send-sharp" size={14} color="#ffffff" />
-                        </View>
-                    </View>
-                    <View style={[styles.flexdirection,styles.width90]}>
-                        <View style={[styles.flexdirection,styles.width100]}>
-                            <DrawerItem
-                                label="Rate Your Purchase"
-                                onPress={() => { props.navigation.navigate('RateYourPurchase') }}
-                                labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={styles.darkBlue}
-                            />
-                        </View>
-                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
-                            <Ionicons name="send-sharp" size={14} color="#ffffff" />
-                        </View>
-                    </View>
-
-                    <View style={[styles.flexdirection,styles.width90]}>
-                        <View style={[styles.flexdirection,styles.width100]}>
-                            <DrawerItem
-                                label="Write a Review"
-                                onPress={() => { }}
-                                labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={styles.lightBlue}
-                            />
-                        </View>
-                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
-                            <Ionicons name="send-sharp" size={14} color="#ffffff" />
-                        </View>
-                    </View>
-                    <View style={[styles.flexdirection,styles.width90]}>
-                        <View style={[styles.flexdirection,styles.width100]}>
-                            <DrawerItem
-                                label="Share"
-                                onPress={() => { }}
-                                labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={styles.darkBlue}
-                            />
-                        </View>
-                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
-                            <Ionicons name="send-sharp" size={14} color="#ffffff" />
-                        </View>
-                    </View>
-
-                    <View style={[styles.flexdirection,styles.width90]}>
-                        <View style={[styles.flexdirection,styles.width100]}>
-                            <DrawerItem
-                                label="Your E-Store"
-                                onPress={() => { }}
-                                labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={styles.lightBlue}
-                            />
-                        </View>
-                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
-                            <Ionicons name="send-sharp" size={14} color="#ffffff" />
-                        </View>
-                    </View>
-                    <View style={[styles.flexdirection,styles.width90]}>
-                        <View style={[styles.flexdirection,styles.width100]}>
-                            <DrawerItem
-                                label="Your E-Business Card"
-                                onPress={() => { props.navigation.navigate('EBusinessCard') }}
-                                labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={styles.darkBlue}
-                            />
-                        </View>
-                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
-                            <Ionicons name="send-sharp" size={14} color="#ffffff" />
-                        </View>
-                    </View>
-
-                    <View style={[styles.flexdirection,styles.width90]}>
-                        <View style={[styles.flexdirection,styles.width100]}>
-                            <DrawerItem
-                                label="Add Remove Business Listing"
-                                onPress={() => { props.navigation.navigate('AddBusiness') }}
-                                labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={styles.lightBlue}
-                            />
-                        </View>
-                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
-                            <Ionicons name="send-sharp" size={14} color="#ffffff" />
-                        </View>
-                    </View>
-                    <View style={[styles.flexdirection,styles.width90]}>
-                        <View style={[styles.flexdirection,styles.width100]}>
-                            <DrawerItem
-                                label="Referrals History"
-                                onPress={() => { }}
-                                labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={styles.darkBlue}
-                            />
-                        </View>
-                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
-                            <Ionicons name="send-sharp" size={14} color="#ffffff" />
-                        </View>
-                    </View>
-
-                    <View style={[styles.flexdirection,styles.width90]}>
-                        <View style={[styles.flexdirection,styles.width100]}>
-                            <DrawerItem
-                                label="How App Works"
-                                onPress={() => { }}
-                                labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={styles.lightBlue}
-                            />
-                        </View>
-                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
-                            <Ionicons name="send-sharp" size={14} color="#ffffff" />
-                        </View>
-                    </View>
-                    <View style={[styles.flexdirection,styles.width90]}>
-                        <View style={[styles.flexdirection,styles.width100]}>
-                            <DrawerItem
-                                label="Contact Support"
-                                onPress={() => { }}
-                                labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={styles.darkBlue}
-                            />
-                        </View>
-                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
-                            <Ionicons name="send-sharp" size={14} color="#ffffff" />
-                        </View>
-                    </View>
-                    <View style={[styles.flexdirection,styles.width90]}>
-                        <View style={[styles.flexdirection,styles.width100]}>
-                            <DrawerItem
-                                label="Privacy Policy"
-                                onPress={() => { }}
-                                labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={styles.lightBlue}
-                            />
-                        </View>
-                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
-                            <Ionicons name="send-sharp" size={14} color="#ffffff" />
-                        </View>
-                    </View>
-                    <View style={[styles.flexdirection,styles.width90]}>
-                        <View style={[styles.flexdirection,styles.width100]}>
-                            <DrawerItem
-                                label="Dashboard"
-                                onPress={() => { props.navigation.navigate('Dashboard') }}
-                                labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={styles.darkBlue}
-                            />
-                        </View>
-                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
-                            <Ionicons name="send-sharp" size={14} color="#ffffff" />
-                        </View>
-                    </View>
-                    <View style={[styles.flexdirection,styles.width90]}>
-                        <View style={[styles.flexdirection,styles.width100]}>
-                            <DrawerItem
-                                label="My Customer"
-                                onPress={() => { props.navigation.navigate('MyCustomer') }}
-                                labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={styles.lightBlue}
-                            />
-                        </View>
-                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
-                            <Ionicons name="send-sharp" size={14} color="#ffffff" />
-                        </View>
-                    </View>                    
-
-                    <View style={[styles.flexdirection,styles.width90]}>
-                        <View style={[styles.flexdirection,styles.width100]}>
-                            <DrawerItem
-                                label="Sign Out"
-                                onPress={() => { signOut() }}
-                                labelStyle={{ color: '#ffffff', fontSize: 14 }}
-                                style={styles.darkBlue}
-                            />
-                        </View>
-                        <View style={[styles.flexdirection,{paddingTop: 16 }]}>
-                            <Ionicons name="send-sharp" size={14} color="#ffffff" />
-                        </View>
-                    </View>
+                    {
+                        props.plan_id > 2?withAddBusiness.map((item,index)=>{
+                            
+                            return <View style={[styles.flexdirection, styles.width90]} key={index}>
+                            <View style={[styles.flexdirection, styles.width100]}>
+                                <DrawerItem
+                                    label={item.level}
+                                    onPress={() => { item.link=='signout'?signOut():props.navigation.navigate(item.link) }}
+                                    labelStyle={{ color: '#ffffff', fontSize: 14 }}
+                                    style={index%2==0?styles.darkBlue:styles.lightBlue}
+                                />
+                            </View>
+                            <View style={[styles.flexdirection, { paddingTop: 16 }]}>
+                                <Ionicons name="send-sharp" size={14} color="#ffffff" />
+                            </View>
+                        </View>}):withoutAddBusiness.map((item,index)=>{
+                            return <View style={[styles.flexdirection, styles.width90]} key={index}>
+                            <View style={[styles.flexdirection, styles.width100]}>
+                                <DrawerItem
+                                    label={item.level}
+                                    onPress={() => { item.link=='signout'?signOut():props.navigation.navigate(item.link) }}
+                                    labelStyle={{ color: '#ffffff', fontSize: 14 }}
+                                    style={index%2==0?styles.darkBlue:styles.lightBlue}
+                                />
+                            </View>
+                            <View style={[styles.flexdirection, { paddingTop: 16 }]}>
+                                <Ionicons name="send-sharp" size={14} color="#ffffff" />
+                            </View>
+                        </View>})
+                    }                    
                 </Drawer.Section>
 
             </DrawerContentScrollView>
@@ -623,38 +497,45 @@ const DrawerContent = (props) => {
 
 const RootNavigator = (props) => {
     const [data, setData] = React.useState({
-        firstName:'', lastName:'', emailAddress: '', groupId: '', id: ''
+        firstName: '', lastName: '', emailAddress: '', groupId: '', id: '', plan_id: ''
     });
-    
+    const [token, setToken] = React.useState(null);
+
     React.useEffect(() => {
-        getUser().then((value) => {            
-            value?setData({
+        getAccessToken().then((value) => { value ? setToken(value) : setToken(props.token) });
+        getUser().then((value) => {
+            value ? setData({
                 firstName: value.firstName,
                 lastName: value.lastName,
                 emailAddress: value.email,
                 id: value.userId,
-                groupId: value.groupId
-            }):setData({ 
+                groupId: value.groupId,
+                token: value.token,
+                plan_id: value.userDetails.plan_id
+            }) : setData({
                 firstName: props.firstName,
                 lastName: props.lastName,
-                emailAddress: props.email
+                emailAddress: props.email,
+                plan_id: props.plan_id
+
             })
         });
     }, []);
 
     return (
-        <DrawerNav.Navigator drawerContent={props => <DrawerContent {...props} firstName={data.firstName} lastName={data.lastName} email={data.emailAddress}/>}>
-            <DrawerNav.Screen name="Home" component={LandingStackSreen} />        
+
+        <DrawerNav.Navigator drawerContent={props => <DrawerContent {...props} firstName={data.firstName} lastName={data.lastName} email={data.emailAddress} token={token} plan_id={data.plan_id} />}>
+            <DrawerNav.Screen name="Home" component={LandingStackSreen} />
             <DrawerNav.Screen name="Dashboard" component={DashboardStackSreen} />
             <DrawerNav.Screen name="AddReferrals" component={AddReferralStackScreen} />
             <DrawerNav.Screen name="ReferralHistory" component={ReferralHistoryStackScreen} />
             <DrawerNav.Screen name="Shop" component={ShopStackScreen} />
             <DrawerNav.Screen name="AddBusiness" component={AddBusinessStackScreen} />
-            <DrawerNav.Screen name="EBusinessCard" component={EBusinessCardStackScreen} />
-            {/* <DrawerNav.Screen name="RateYourPurchase" children={OrderTabs} /> */}
+            <DrawerNav.Screen name="BusinessList" component={BusinessListStackSreen} />
+            <DrawerNav.Screen name="EBusinessCard" component={EBusinessCardStackScreen} />            
             <DrawerNav.Screen name="RateYourPurchase" component={RateYourPurchaseStackScreen} />
             <DrawerNav.Screen name="MyCustomer" component={MyCustomerStackScreen} />
-            <DrawerNav.Screen name="Profile" component={updateProfileScreen} />
+            <DrawerNav.Screen name="Profile" component={updateProfileScreen} {...props} token={token} />
         </DrawerNav.Navigator>
     )
 
