@@ -185,6 +185,13 @@ export default StyleSheet.create({
     touch:{height:40,width:'100%',textAlign:'center',marginLeft:150  },
     select:{
         marginTop:5,color: '#fff',fontSize:15,justifyContent:'space-between',backgroundColor: '#6379FF',height:30,width:100,textAlign:'center',borderRadius:5,paddingTop:4
-    }
+    },
+    addContainer:{flexDirection:"row",padding:5,height:'auto',justifyContent:'space-around', borderWidth:1,margin:5},
+    row:{flexDirection:"row"},
+    photo:{borderWidth:1,borderRadius:5,height:60,width:60,alignItems:'center',justifyContent:'space-around'},
+    contentContainer:{width:'80%',height:'auto',marginLeft:10,justifyContent:'space-around'},
+    masterText:{paddingLeft:5,flex: 1, fontSize:18, color:'#000', justifyContent:'space-around'},
+    name:{paddingLeft:5,flex: 1, fontSize:18, color:'#000', justifyContent:'space-around',fontWeight:'bold'}
+
 
 });  

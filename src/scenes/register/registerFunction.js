@@ -1,26 +1,24 @@
 import { isEmpty, validateEmail } from '../../utils/validation'
-export const UpdateSearch = (val, temp) => {  
-    
-    const searchTxt = val ? val : null
-        
+import axios from "../../apiConfig";
+export const UpdateSearch = (val, temp) => {
+    const searchTxt = val ? val.toLowerCase() : null
     if (searchTxt.length > 0) {
-        let searchStringSplit = searchTxt.split(/(\s+)/).filter( function(e) { return e.trim().length > 0; } );
-        const searchFilterData = temp.filter(item => 
+        let searchStringSplit = searchTxt.split(/(\s+)/).filter(function (e) { return e.trim().length > 0; });
+        const searchFilterData = temp.filter(item =>
             searchStringSplit.some(searchString => item.firstname.toLowerCase().includes(searchString))
-        );       
-        return searchFilterData;    
+        );
+        return searchFilterData;
     }
-    return false   
+    return false
 }
 
-export const handleFormValidation = (data) =>{
+export const handleFormValidation = (data) => {
     let errorMsg = "";
-    
     if (!validateEmail(data.emailAddress)) {
-        errorMsg += "Provide valid email address \n";          
+        errorMsg += "Provide valid email address \n";
     }
     if (isEmpty(data.firstName)) {
-        errorMsg += "Firstname Required  \n";            
+        errorMsg += "Firstname Required  \n";
     }
     if (isEmpty(data.lastName)) {
         errorMsg += "Lastname Required  \n";
@@ -37,10 +35,13 @@ export const handleFormValidation = (data) =>{
     if (isEmpty(data.streetAddress)) {
         errorMsg += "Street Address Is Required  \n";
     }
-    if (isEmpty(data.state)) {
-        errorMsg +="State Required  \n";           
+    // if (isEmpty(data.appartment)) {
+    //     errorMsg += "Suite or Appartment Is Required  \n";
+    // }
+    if (isEmpty(data.stateValue)) {
+        errorMsg += "State Required  \n";
     }
-    if(!isEmpty(errorMsg)){
+    if (!isEmpty(errorMsg)) {
         alert(errorMsg)
         return false
     }

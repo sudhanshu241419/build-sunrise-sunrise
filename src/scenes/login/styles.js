@@ -9,7 +9,7 @@ export default StyleSheet.create({
     text_header: {
         color: '#4359F7',
         fontWeight: 'bold',
-        fontSize: 41,
+        fontSize: 31,
         textAlign: 'center',
         marginBottom: 40,
         marginTop: 50

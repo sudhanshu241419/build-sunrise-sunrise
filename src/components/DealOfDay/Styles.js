@@ -7,11 +7,11 @@ export default StyleSheet.create({
     dealContainer:{flex:1,marginTop:10},
     title:{
         color:'#000000', 
-        height:21,
+        height:'auto',
         fontSize:16,        
         textAlign:'left',
-        paddingLeft:10,
+        paddingLeft:10,        
     },
     textMargin:{ marginTop:10,marginBottom:15},
-    textWeight:{fontWeight:'bold'},
+    textWeight:{fontWeight:'bold',marginBottom:5},
 })

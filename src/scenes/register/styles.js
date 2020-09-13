@@ -14,10 +14,9 @@ export default StyleSheet.create({
   text_header: {
     color: '#4359F7',
     fontWeight: 'bold',
-    fontSize: 41,
+    fontSize: 31,
     textAlign: 'center',
-    marginBottom: 15,
-    marginTop: 40,
+    marginBottom: 15,    
     fontFamily: fontFamily,
     letterSpacing: letterSpacing
   },
@@ -180,10 +179,11 @@ export default StyleSheet.create({
   pickerIcon: {
     position: "absolute",
     bottom: 10,
-    top: 0,
-    right: 8,
+    top: 5,
+    zIndex:1,
+    right: 1,
     fontSize: 40,
-    color: "#6379FF"
+    color: "#6379FF",    
 },
 referralInfo: {
   color: '#6379FF',
@@ -196,8 +196,12 @@ referralInfo: {
 },
 pickerContentB2b: {
   color: "#000000",
-  backgroundColor: "transparent",
+  backgroundColor: "#fff",
   marginLeft: 10,
+},
+icon_style: {
+  paddingLeft: 5,
+  paddingRight: 5,
 },
 
 });  

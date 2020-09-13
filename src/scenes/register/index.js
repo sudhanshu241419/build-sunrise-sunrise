@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef } from 'react';
 import {
     Text,
     View,
@@ -8,29 +8,35 @@ import {
     StatusBar,
     StyleSheet,
     Alert,
-    TouchableHighlight
-} from 'react-native';
-import CheckBox from '@react-native-community/checkbox';
-import { useTheme } from 'react-native-paper';
+    TouchableHighlight,
+    RefreshControlBase
+} from 'react-native'
+import CheckBox from '@react-native-community/checkbox'
+import { useTheme } from 'react-native-paper'
 import styles from './styles'
-import axios from "../../apiConfig";
-import { isEmpty } from '../../utils/validation';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Picker } from '@react-native-community/picker';
+import axios from "../../apiConfig"
+import { isEmpty } from '../../utils/validation'
+import Feather from 'react-native-vector-icons/Feather'
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import { Picker } from '@react-native-community/picker'
 import { AuthContext } from '../../components/context'
 import ActivityIndicator from 'react-native-loading-spinner-overlay'
 import { UpdateSearch, handleFormValidation } from './registerFunction'
+import {connect} from 'react-redux'
+import {userDetailsAction} from '../../actionCreator/userDetailsAction'
 
-const RegisterScreen = ({ navigation }) => {
+
+
+const RegisterScreen = ({navigation,dispatch}) => {
     const [data, setData] = React.useState({
         firstName: '',
         lastName: '',
         emailAddress: '',
         phoneNumber: '',
         streetAddress: '',
-        suite: '',
+        appartment: '',
         city: '',
-        state: '',
+        stateValue: '',
         zipCode: '',
         password: '',
         confirmPassword: '',
@@ -40,7 +46,9 @@ const RegisterScreen = ({ navigation }) => {
         exp: '',
         cvv: '',
         planValue: 0,
-        managerValue: 1,
+        managerValue: "default",
+        secureTextEntry: true,
+        confirmSecureTextEntry:true
 
     });
     const [showLoader, setLoader] = React.useState(false)
@@ -59,49 +67,59 @@ const RegisterScreen = ({ navigation }) => {
 
         ]
     );
-    const [managerData, setManagerData] = React.useState({});
+    const [managerData, setManagerData] = React.useState({id:'default',firstname:'Default',lastname:''});
     const [showManagerList, setShowManagerList] = React.useState(false)
     const [showManagerSearch, setShowManagerSearch] = React.useState(false)
     const [manager, setManager] = React.useState({
-        id: '',
-        firstname: '',
+        id: 'default',
+        firstname: 'Default',
     })
     const groupId = { '0': '1', '35': '6', '65': '5', '99': '4' }
     const [items, setItems] = React.useState({});
     const [searchTxt, setSearchTxt] = React.useState(null);
+    const [stateData,setState] = React.useState({});
 
     React.useEffect(() => {
+        console.log(navigation)
         getPlan()
         getManager()
-    }, []);
+        getState()
+    }, []);  
 
     const getPlan = () => {
         setLoader(true);
         axios.get('krypson-plan/plan/search?searchCriteria[pageSize]=10')
-            .then(function (response) {
-                setPlan(response.data.items);
-                return true
-            })
-            .catch(function (error) {
-                console.warn(error);
-            });
+        .then(function (response) {        
+            setPlan(response.data.items)
+        })
+        .catch(function (error) {
+            console.log(error.response.data.message)
+        });
     }
 
     const getManager = () => {
-
         axios.get('customers/search?searchCriteria[filter_groups][0][filters][1][field]=group_id&searchCriteria[filter_groups][0][filters][1][value]=4&searchCriteria[filter_groups][0][filters][1][condition_type]=eq')
-            .then(function (response) {
-                setManagerData(response.data.items);
-                setManager({ id: response.data.items[0].id, firstname: response.data.items[0].firstname })
+        .then(function (response) { 
+            setManagerData(response.data.items)
+            setManager({ id: response.data.items[0].id, firstname: response.data.items[0].firstname + " " + response.data.items[0].lastname })
+        })
+        .catch(function (error) {
+            console.log(error.response.data.message)
+        }); 
+    }
 
-                setLoader(false);
-                return true;
-            })
-            .catch(function (error) {
-                console.log(error);
-                setLoader(false);
-            });
-        return true;
+    const getState = () =>{
+        
+        axios.get('krypson-customapi/getstate/?param=usa')
+        .then(function (response) {     
+            //console.log(response.data)        
+            setState(response.data)  
+            setLoader(false);          
+        })
+        .catch(function (error) {
+            console.log(error.response.data.message)
+        }); 
+        
     }
 
 
@@ -126,6 +144,20 @@ const RegisterScreen = ({ navigation }) => {
         });
     }
 
+    const updateSecureTextEntry = () => {
+        setData({
+            ...data,
+            secureTextEntry: !data.secureTextEntry
+        });
+    }
+    
+    const updateConfirmSecureTextEntry = () => {
+        setData({
+            ...data,
+            confirmSecureTextEntry: !data.confirmSecureTextEntry
+        });
+    }
+
     const submitSignUpForm = () => {
         let error = false;
         let planValue = parseInt(data.planValue);
@@ -147,6 +179,7 @@ const RegisterScreen = ({ navigation }) => {
             return false;
         }
         setLoader(true);
+        
         axios.post('customers', {
             "customer": {
                 "email": data.emailAddress.toString(),
@@ -155,8 +188,8 @@ const RegisterScreen = ({ navigation }) => {
                 "groupId": groupIdValue,
                 "extension_attributes": {
                     "plan": data.planValue.toString(),
-                    "manager_id": manager.id,
-                    "manager_email": manager.firstname
+                    "manager_id": (manager.id=='default' || data.planValue==0)?'':manager.id,
+                    "manager_email": (manager.id=='default' || data.planValue==0)?'':manager.firstname
                 },
                 "addresses": [{
                     "defaultShipping": true,
@@ -164,8 +197,11 @@ const RegisterScreen = ({ navigation }) => {
                     "firstname": data.firstName.toString(),
                     "lastname": data.lastName.toString(),
                     "region": {
-                        "region": data.state.toString()
+                        "region": data.stateValue.toString()
                     },
+                    "extension_attributes": {
+                        "appartment" : data.appartment.toString()
+                    },                   
                     "postcode": data.zipCode.toString(),
                     "street": [data.streetAddress.toString()],
                     "city": data.city.toString(),
@@ -176,11 +212,11 @@ const RegisterScreen = ({ navigation }) => {
             "password": data.password.toString()
         })
             .then(function (response) {
-                setLoader(false);
                 getToken(data.emailAddress.toString(), data.firstName.toString(), data.password.toString())
                 setData({ emailAddress: '' })
             })
             .catch(function (error) {
+                alert(error.response.data.message)
                 console.log(error.response.data.message);
                 setLoader(false);
             });
@@ -188,9 +224,11 @@ const RegisterScreen = ({ navigation }) => {
 
     const getToken = (email, userName, password) => {
         if (email.length == 0 || password.length == 0) {
+            setLoader(false);
             Alert.alert('Wrong Input!', 'Username or password field cannot be empty.', [
                 { text: 'Okay' }
             ]);
+
             return;
         }
         axios.post('integration/customer/token', {
@@ -201,6 +239,7 @@ const RegisterScreen = ({ navigation }) => {
                 getCustomer(response.data)
             })
             .catch(function (error) {
+                setLoader(false);
                 Alert.alert('Invalid User!', 'Username or password is incorrect.', [
                     { text: 'Okay' }
                 ]);
@@ -216,7 +255,9 @@ const RegisterScreen = ({ navigation }) => {
             {
                 headers: { 'Content-type': 'application/json', 'authorization': authToken }
             }).then(function (response) {
-
+                setLoader(false);
+                alert("Thank you! Your registration has been successfully done.");
+                
                 const userInfo = [{
                     id: response.data.id,
                     email: response.data.email,
@@ -232,11 +273,13 @@ const RegisterScreen = ({ navigation }) => {
                     default_shipping_id: response.data.default_shipping,
                     plan_id: getPlanId()
                 }]
-                console.log("userInfo=", userInfo);
-                signIn(userInfo);
+                //console.log("userInfo=", userInfo);               
+                dispatch(userDetailsAction(userInfo));              
+                signIn(userInfo);  
 
             }).catch(function (error) {
                 console.log(error)
+                setLoader(false);
             });
     }
 
@@ -265,12 +308,13 @@ const RegisterScreen = ({ navigation }) => {
     }
 
     const StatusBarHeight = StatusBar.currentHeight
+    const managerRef = createRef()
 
     return (
         <View style={styles.container}>
 
             <StatusBar />
-
+            <View style={{justifyContent:'space-around',marginLeft:10,marginTop:10}}><Ionicons name="arrow-back" style={{color:'#4359F7',fontSize:30}} onPress={()=>navigation.goBack()}/></View>
             <View style={styles.header}>
                 <Text style={styles.text_header}>Create Account</Text>
             </View>
@@ -337,23 +381,62 @@ const RegisterScreen = ({ navigation }) => {
 
                 <Text style={styles.text_footer}>Password</Text>
                 <View style={styles.action}>
+                
                     <TextInput
-                        secureTextEntry={true}
+                        secureTextEntry={data.secureTextEntry ? true : false}                        
                         style={styles.textInput}
                         autoCapitalize="none"
                         onChangeText={(val) => handlePasswordChange(val)}
                     />
+                     <TouchableOpacity
+                        onPress={updateSecureTextEntry}
+                    >
+                        {data.secureTextEntry ?
+                            <Feather
+                                name="eye-off"
+                                color="grey"
+                                style={styles.icon_style}
+                                size={20}
+                            />
+                            :
+                            <Feather
+                                name="eye"
+                                style={styles.icon_style}
+                                color="grey"
+                                size={20}
+                            />
+                        }
+                    </TouchableOpacity>
 
                 </View>
 
                 <Text style={styles.text_footer}>Confirm Password</Text>
                 <View style={styles.action}>
                     <TextInput
-                        secureTextEntry={true}
+                        secureTextEntry={data.confirmSecureTextEntry ? true : false} 
                         style={styles.textInput}
                         autoCapitalize="none"
                         onChangeText={(val) => handleConfirmPasswordChange(val)}
                     />
+                    <TouchableOpacity
+                        onPress={updateConfirmSecureTextEntry}
+                    >
+                        {data.confirmSecureTextEntry ?
+                            <Feather
+                                name="eye-off"
+                                color="grey"
+                                style={styles.icon_style}
+                                size={20}
+                            />
+                            :
+                            <Feather
+                                name="eye"
+                                style={styles.icon_style}
+                                color="grey"
+                                size={20}
+                            />
+                        }
+                    </TouchableOpacity>
 
                 </View>
 
@@ -374,13 +457,36 @@ const RegisterScreen = ({ navigation }) => {
                 <View style={styles.action}>
 
                     <TextInput
-                        name="suite"
-                        id="suite"
+                        name="appartment"
+                        id="appartment"
                         style={styles.textInput}
                         autoCapitalize="none"
-                        onChangeText={(val) => handleInputChange(val, 'suite')}
+                        onChangeText={(val) => handleInputChange(val, 'appartment')}
                     />
 
+                </View>
+
+                <Text style={styles.text_footer}>State</Text>               
+
+                <View style={styles.pickerWrapper}>
+
+                <Ionicons name="ios-caret-down-sharp" style={styles.pickerIcon} />
+                <Picker
+                    mode="dropdown"
+                    style={styles.pickerContentB2b}
+                    selectedValue={data.stateValue}
+                    onValueChange={(itemValue, itemIndex) =>{
+                        setData({ ...data, stateValue: itemValue })  
+                    }
+                    }
+
+                >
+                    {
+                        (stateData.length>0)?stateData.map((item, index) =>
+                            <Picker.Item label={item.label} value={item.value} key={index} />
+                        ):null
+                    }
+                </Picker>
                 </View>
 
                 <Text style={styles.text_footer}>City</Text>
@@ -394,20 +500,7 @@ const RegisterScreen = ({ navigation }) => {
                         onChangeText={(val) => handleInputChange(val, 'city')}
                     />
 
-                </View>
-
-                <Text style={styles.text_footer}>State</Text>
-                <View style={styles.action}>
-
-                    <TextInput
-                        name="state"
-                        id="state"
-                        style={styles.textInput}
-                        autoCapitalize="none"
-                        onChangeText={(val) => handleInputChange(val, 'state')}
-                    />
-
-                </View>
+                </View>                              
 
                 <Text style={styles.text_footer}>Zip Code</Text>
                 <View style={styles.action}>
@@ -431,8 +524,10 @@ const RegisterScreen = ({ navigation }) => {
                         mode="dropdown"
                         style={styles.pickerContentB2b}
                         selectedValue={data.planValue}
-                        onValueChange={(itemValue, itemIndex) =>
-                            setData({ ...data, planValue: itemValue })
+                        onValueChange={(itemValue, itemIndex) =>{
+                            setData({ ...data, planValue: itemValue })                            
+                            setManager({ id: '', firstname: '' })
+                        }
                         }
 
                     >
@@ -443,33 +538,44 @@ const RegisterScreen = ({ navigation }) => {
                         }
                     </Picker>
                 </View>
+                
+
+
                 {
                     (data.planValue > 0 && data.planValue < 65) ?
                         <>
                             <Text style={styles.text_footer}>Select Your Manager</Text>
                             <View style={styles.pickerWrapper}>
-                                <Ionicons name="ios-caret-down-sharp" style={styles.pickerIcon} />
+                                <Ionicons name="ios-caret-down-sharp" style={styles.pickerIcon}  onPress={() => {
+                                    setShowManagerList(true)
+                                    managerRef.current.focus();
+                                }}/>
                                 <TextInput
                                     style={styles.pickerContentB2b}
                                     defaultValue={manager.firstname}
+                                    ref={managerRef}
+                                    placeholder="Default"
+                                    placeholderStyle={{color: '#000',fontSize: 18}}
                                     onFocus={() => setShowManagerList(true)}
+                                    //onBlur ={()=>setShowManagerList(false)}
                                     onChangeText={(val) => getSearch(val)}
                                 />
                             </View>
 
                             {showManagerList == true ?
-                                <View style={[styles.pickerWrapper, { marginTop: 0, borderWidth: 0 }]}>
+                                <View style={[styles.pickerWrapper, { marginTop: 0, borderWidth: 1}]}>
                                     {
                                         managerData.map((item, index) => {
                                             return <TouchableHighlight
                                                 key={item.id}
                                             >
-                                                <View style={{ backgroundColor: '#f4f4f4' }}>
+                                                <View style={{ backgroundColor: '#fff', shadowColor: '#000',shadowRadius: 10,
+                                shadowOpacity: 5,}}>
                                                     <Text style={{ margin: 5, height: 25 }} onPress={() => {
-                                                        setManager({ id: item.id, firstname: item.firstname })
+                                                        setManager({ id: item.id, firstname: item.firstname+" "+item.lastname })
                                                         setShowManagerList(false)
                                                     }
-                                                    }>{item.firstname}</Text>
+                                                    }>{item.firstname+" "+item.lastname}</Text>
                                                 </View>
                                             </TouchableHighlight>
                                         })
@@ -478,18 +584,18 @@ const RegisterScreen = ({ navigation }) => {
                             }
                             {
                                 items.length > 0 && showManagerSearch ?
-                                    <View style={[styles.pickerWrapper, { marginTop: 0, borderWidth: 0 }]}>
+                                    <View style={[styles.pickerWrapper, { marginTop: 0, borderWidth: 1, shadowColor:"#ccc",shadowOpacity:10,borderRadius:3 }]}>
                                         {
                                             items.map((item, index) => {
                                                 return <TouchableHighlight
                                                     key={item.id}
                                                 >
-                                                    <View style={{ backgroundColor: '#f3f3f3' }}>
-                                                        <Text style={{ backgroundColor: '#f3f3f3', margin: 5, height: 25 }} onPress={() => {
-                                                            setManager({ id: item.id, firstname: item.firstname })
+                                                    <View style={{ backgroundColor: '#fff' }}>
+                                                        <Text style={{ backgroundColor: '#fff', margin: 5, height: 25 }} onPress={() => {
+                                                            setManager({ id: item.id, firstname: item.firstname+" "+item.lastname })
                                                             setShowManagerSearch(false)
                                                         }
-                                                        }>{item.firstname}</Text>
+                                                        }>{item.firstname+" "+item.lastname}</Text>
                                                     </View>
                                                 </TouchableHighlight>
                                             })
@@ -616,4 +722,16 @@ const RegisterScreen = ({ navigation }) => {
     );
 
 }
-export default RegisterScreen;
+
+// function mapStateToProps (state){
+//     const {userdetails}= state
+//     return {userdetails}
+// }
+
+// const mapDispatchToProps = dispatch => (
+//     bindActionCreators({
+//       userDetails,
+//     }, dispatch)
+//   );
+// export default connect(mapStateToProps,mapDispatchToProps)(RegisterScreen);
+export default connect()(RegisterScreen);

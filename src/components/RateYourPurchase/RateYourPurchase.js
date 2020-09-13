@@ -7,7 +7,7 @@ import styles from './Styles'
 
 const RateYourPurchase = (props) => {
 return(
-    <>
+    <View style={styles.pcontainer}>
     
     <View style={styles.reviewContainer}>
       <Text style={styles.reviewText}>Review Your Last Purchase</Text> 
@@ -22,7 +22,7 @@ return(
       <View style={{width:196, marginLeft:40,marginTop:15}}>
          <Text style={styles.pro}>Prudtions Pride</Text> 
          <Text style={styles.prosub}>Vitamin - C 100mg</Text> 
-
+     
          <View style={styles.starContainer}>
             <AntDesign name="star" style={styles.star}/>
             <AntDesign name="star" style={styles.star}/>
@@ -39,7 +39,7 @@ return(
           <Ionicons name="ios-chevron-forward-sharp" style={styles.icon}  /> 
     </View>
     </TouchableOpacity >
-</>
+</View>
 );
 }
 

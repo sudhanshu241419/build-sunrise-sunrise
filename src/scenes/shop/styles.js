@@ -1,12 +1,14 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet, Platform,Dimensions } from 'react-native';
 const fontFamily = Platform.OS === 'ios' ? 'Arial-BoldMT' : 'sans-serif-medium';
 const labelfontFamily = Platform.OS === 'ios' ? 'Segoe UI,Bold' : 'sans-serif-medium';
+const { width, height } = Dimensions.get('window');
 
 const letterSpacing = 2;
 export default StyleSheet.create({
   container: {
     flex: 1,
     textAlign: 'center',
+    width:width
   },
 
   header: {
@@ -36,9 +38,18 @@ export default StyleSheet.create({
 
   borderBottomWidth: { borderBottomWidth: 1 },
 
-  proSubContainer: { width: "90%", marginTop: 25, marginLeft: 30 },
+  proSubContainer: {  
+    marginTop: 25, 
+    width:width, 
+    flex:2,
+    justifyContent:'space-around' 
+  },
 
-  productContainer: { borderWidth: 0, borderTopWidth: 0, borderColor: '#707070', height: 340 },
+  productContainer: { 
+    height:'auto',
+    width:width,
+    justifyContent:'space-around' 
+  },
 
   flex: { flex: 1 },
 
@@ -141,6 +152,6 @@ export default StyleSheet.create({
 
 productHeading: { fontSize: 25, color: '#000000', paddingTop: 3, marginLeft: 6, fontWeight: 'bold' },
 productSubHeading: { fontSize: 20, color: '#707070', paddingTop: 3, marginLeft: 6, fontWeight: 'bold' },
-
+heightAuto:{height:'auto'}
 
 }) 

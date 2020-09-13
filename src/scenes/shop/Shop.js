@@ -136,20 +136,20 @@ const Shop = ({ navigation }) => {
 
                         <Text style={[styles.shopAllDep, styles.textWeight]}>
                             Shop All Departments & Services
-                </Text>
+                        </Text>
                         <Text style={[styles.services, styles.textWeight]}>
                             Services
-                </Text>
+                        </Text>
 
                         <View style={[styles.productContainer, styles.flex]}>
 
                             <View style={[styles.proSubContainer, styles.row]}>
-                                <View style={[styles.flex, { width: "70%" }]}>
+                                <View style={styles.heightAuto}>
                                     <Image source={require('../../assets/automotive-service-advisor.png')} />
                                     <Text style={[styles.textSize, styles.textColor]}>Car Mechanic</Text>
 
                                 </View>
-                                <View style={styles.proColSec}>
+                                <View style={styles.heightAuto}>
                                     <Image source={require('../../assets/hqdefault.png')} />
                                     <Text style={[styles.textSize, styles.textColor]}>Carpet Cleaning</Text>
 
@@ -157,12 +157,12 @@ const Shop = ({ navigation }) => {
 
                             </View>
                             <View style={[styles.proSubContainer, styles.row]}>
-                                <View style={[styles.flex, { width: "70%" }]}>
+                                <View style={styles.heightAuto}>
                                     <Image source={require('../../assets/bigstock-Credit-Score-Chart-or-Pie-Grap-120307136.png')} />
                                     <Text style={[styles.textSize, styles.textColor]}>Credit Repair</Text>
 
                                 </View>
-                                <View style={styles.proColSec}>
+                                <View style={styles.heightAuto}>
                                     <Image source={require('../../assets/how-income-tax-1000.png')} />
                                     <Text style={[styles.textSize, styles.textColor]}>Taxes & Accounting</Text>
 
@@ -175,28 +175,28 @@ const Shop = ({ navigation }) => {
 
                         <Text style={[styles.services, styles.textWeight]}>
                             Products
-                </Text>
+                        </Text>
 
                         <View style={[styles.productContainer, styles.flex]}>
 
                             <View style={[styles.proSubContainer, styles.row]}>
-                                <View style={[styles.flex, { width: "70%" }]}>
+                                <View style={styles.heightAuto}>
                                     <Image source={require('../../assets/shoes.png')} />
                                     <Text style={[styles.textSize, styles.textColor]}>Shoes & Accessories</Text>
                                 </View>
-                                <View style={styles.proColSec}>
+                                <View style={styles.heightAuto}>
                                     <Image source={require('../../assets/iphone11-select-2019-family.png')} />
                                     <Text style={[styles.textSize, styles.textColor]}>Apple Products</Text>
                                 </View>
 
                             </View>
-                            <View style={[styles.proSubContainer, styles.row]}>
-                                <View style={[styles.flex, { width: "70%" }]}>
+                            <View style={[styles.proSubContainer, styles.row,{marginBottom:5}]}>
+                                <View style={styles.heightAuto}>
                                     <Image source={require('../../assets/cotaphil.png')} />
                                     <Text style={[styles.textSize, styles.textColor]}>Health & Beauty</Text>
 
                                 </View>
-                                <View style={styles.proColSec}>
+                                <View style={styles.heightAuto}>
                                     <Image source={require('../../assets/kitchenware.png')} />
                                     <Text style={[styles.textSize, styles.textColor]}>Kitchenware</Text>
                                 </View>

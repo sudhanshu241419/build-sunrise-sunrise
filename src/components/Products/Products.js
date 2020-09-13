@@ -11,12 +11,12 @@ const Products = (props) => {
         <View style={[styles.productContainer, styles.flex]}>
 
             <View style={[styles.proSubContainer, styles.row]}>
-                <View style={[styles.flex, { width: "70%" }]}>
+                <View style={styles.heightAuto}>
                     <Image source={require('../../assets/emp.png')} />
-                    <Text style={[styles.textSize, styles.textColor]}>Carpet Cleaning Special</Text>
+                    <Text style={[styles.textSize, styles.textColor]}>Carpet Cleaning Special1</Text>
                     <Text style={[styles.textSize, styles.subtextColor]}>From $99/m</Text>
                 </View>
-                <View style={[styles.flex,{ width: "50%", marginLeft: 70 }]}>
+                <View style={styles.heightAuto}>
                     <Image source={require('../../assets/emp.png')} />
                     <Text style={[styles.textSize, styles.textColor]}>Carpet Cleaning Special</Text>
                     <Text style={[styles.textSize, styles.subtextColor]}>From $99/m</Text>
@@ -24,12 +24,12 @@ const Products = (props) => {
 
             </View>
             <View style={[styles.proSubContainer, styles.row]}>
-                <View style={[styles.flex, { width: "70%" }]}>
+                <View style={styles.heightAuto}>
                     <Image source={require('../../assets/emp.png')} />
                     <Text style={[styles.textSize, styles.textColor]}>Carpet Cleaning Special</Text>
                     <Text style={[styles.textSize, styles.subtextColor]}>From $99/m</Text>
                 </View>
-                <View style={[styles.flex,{ width: "50%", marginLeft: 70 }]}>
+                <View style={styles.heightAuto}>
                     <Image source={require('../../assets/emp.png')} />
                     <Text style={[styles.textSize, styles.textColor]}>Carpet Cleaning Special</Text>
                     <Text style={[styles.textSize, styles.subtextColor]}>From $99/m</Text>

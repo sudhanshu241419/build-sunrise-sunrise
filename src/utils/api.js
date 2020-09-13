@@ -16,7 +16,7 @@ export let removeToken = async ()=>{
     return;
 }
 
-export const SetAcessToken = async(token, userId,email,firstName,lastName,groupId,userData)=>{
+export const SetAcessToken = async(token, userId,email,firstName,lastName,groupId,plan_id,userData)=>{
     await AsyncStorage.setItem('token',token)
     await AsyncStorage.setItem('user',JSON.stringify({
         'userId':userId,
@@ -24,6 +24,7 @@ export const SetAcessToken = async(token, userId,email,firstName,lastName,groupI
         'firstName':firstName,
         'lastName':lastName,
         'groupId':groupId,
-        'userDetails':userData
+        'userDetails':userData,
+        'plan_id':plan_id
     }))
 };

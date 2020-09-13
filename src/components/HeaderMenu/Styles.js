@@ -8,11 +8,13 @@ export default StyleSheet.create({
         flexDirection: 'row',        
         justifyContent:'space-around',
         marginTop:10,
-        marginBottom:10
+        marginBottom:10,
+        marginHorizontal: 5, 
+        overflow: 'hidden',        
     },
     headerContents:{
         flexDirection: 'row',
         fontSize:20, 
-        color:'#fff',
+        color:'#fff',        
         },
 })

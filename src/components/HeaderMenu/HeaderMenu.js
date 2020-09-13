@@ -4,15 +4,15 @@ import styles from './Styles'
 
 const HeaderMenu = (props) => {   
 return(    
-<SafeAreaView>
+
         
-    <View style={styles.headerContainer}>
+    <View style={styles.headerContainer} numberOfLines={1} lazy={true}>
         <Text style={[styles.headerContents]} onPress={() => props.nav.navigate('Product')}>Product</Text> 
         <Text style={[styles.headerContents]} onPress={() => props.nav.navigate('Service')}>Service</Text>
         <Text style={[styles.headerContents]} onPress={() => props.nav.navigate('Marketing')}>Marketing Materials</Text> 
     </View>
         
-</SafeAreaView>
+
 );
 }
 

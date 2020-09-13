@@ -11,16 +11,11 @@ import {
 } from 'react-native';
 import CustomButton from '../../components/custom-button';
 import LinearGradient from 'react-native-linear-gradient'
-import { getAccessToken, getUser } from '../../utils/api'
 import styles from './style'
 const fontFamily = Platform.OS === 'ios' ? 'Arial-BoldMT' : 'sans-serif-medium';
 
 const LandingScreen = ({ navigation }) => {
-  const [userToken, setUserToken] = React.useState(null);
-  React.useEffect(() => {
-    getAccessToken().then((value) => setUserToken(value));
-  }, []);
-
+ 
   return (
 
     <View style={styles.app}>
@@ -40,7 +35,7 @@ const LandingScreen = ({ navigation }) => {
               style={styles.stretch}
             />
             <Text style={styles.title}>The Future Of Referral Marketing</Text>
-            {/* <Text style={styles.title}>{userToken}</Text> */}
+            
           </View>
 
           <View style={{ alignItems: 'center',marginTop:30}}>

@@ -1,7 +1,7 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet, Platform,Dimensions } from 'react-native';
 const fontFamily = Platform.OS === 'ios' ? 'Arial-BoldMT' : 'sans-serif-medium';
 const labelfontFamily = Platform.OS === 'ios' ? 'Segoe UI,Bold' : 'sans-serif-medium';
-
+const {width,height} = Dimensions.get('window');
 const letterSpacing = 2;
 export default StyleSheet.create({
     title: {
@@ -22,9 +22,14 @@ export default StyleSheet.create({
 
   borderBottomWidth: { borderBottomWidth: 1},
 
-  proSubContainer: { width: "90%", marginTop: 25, marginLeft: 30 },
+  proSubContainer: { 
+    marginTop: 25, 
+    width:width, 
+    flex:2,
+    justifyContent:'space-around'
+  },
 
-  productContainer: { height: 355 },
+  productContainer: { height:'auto',width:width,justifyContent:'space-around'},
 
   flex: { flex: 1 },
 
@@ -73,6 +78,7 @@ export default StyleSheet.create({
   bladeIcon: {
     color: '#fff', fontSize: 20, bottom: 10, top: 10, position: "absolute", right: 0
   },
+  heightAuto:{height:'auto'}
  
 
 }) 

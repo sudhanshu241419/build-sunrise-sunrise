@@ -13,11 +13,11 @@ const letterSpacing = 2;
 
 const Shop = (props) => {
     const [data, setData] = React.useState({});
-    console.log("test",props.route.name)
+    // console.log("test",props.route.name)
     const rateProduct = () =>{
         return (
             <View style={styles.master}>
-                    <View style={[styles.row, styles.borderColor, { height: 140, }]}>
+                    <View style={[styles.row, styles.borderColor, { height: 'auto' }]}>
                         <View style={[styles.row, { marginTop: 15, marginLeft: 25 }]}>
                             <Image source={require('../../assets/images.png')} />
                         </View>
@@ -35,7 +35,7 @@ const Shop = (props) => {
                         </View>
 
                     </View>
-                    <View style={{ borderColor: "#707070", borderTopWidth: 1, backgroundColor: "#ffffff", height: 45, width: 340, marginLeft: 32, marginTop: 8 }}>
+                    <View style={styles.line}>
                         <Text style={{ flexDirection: 'row', fontSize: 16, color: '#6379FF', marginTop: 7, marginLeft: 6, fontWeight: 'bold' }}>Rate More Products</Text>
                         <Ionicons name="ios-chevron-forward-sharp" style={{ flexDirection: 'row', color: '#6379FF', fontSize: 20, bottom: 10, top: 10, position: "absolute", right: 0 }} />
                     </View>
@@ -47,7 +47,7 @@ const Shop = (props) => {
     const relatedProduct = () =>{
         return(
         <SafeAreaView style={styles.master}>           
-            <View style={[styles.borderColor, { height: 200, }]}>
+            <View style={[styles.borderColor, { height: 'auto' }]}>
                 <View style={[{ marginTop: 15, marginLeft: 25 }]}>
                     <Text style={styles.productHeading}>Related Products</Text>
                 </View>
@@ -66,7 +66,7 @@ const Shop = (props) => {
         <CustomButton style={styles.row}
             textAlign={'center'}
             onPress={() => (cc)}
-            padding={5}
+            padding={3}
             backgroundColor={buttonColor}
             borderWidth={3}
             borderColor='#6379FF'
@@ -74,7 +74,7 @@ const Shop = (props) => {
             height={20}
             width={175}
             childrenStyle={{
-                fontSize: 28,
+                fontSize: 25,
                 color: `${fontColor}`,                            
                 textAlign: 'center',
                 fontFamily:fontFamily,

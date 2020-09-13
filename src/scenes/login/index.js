@@ -1,22 +1,23 @@
-import React from 'react';
-import { Text, View, TouchableOpacity, TextInput, Alert, ScrollView } from 'react-native';
-import * as Animatable from 'react-native-animatable';
-import LinearGradient from 'react-native-linear-gradient';
-import Feather from 'react-native-vector-icons/Feather';
+import React from 'react'
+import { Text, View, TouchableOpacity, TextInput, Alert, ScrollView } from 'react-native'
+import * as Animatable from 'react-native-animatable'
+import LinearGradient from 'react-native-linear-gradient'
+import Feather from 'react-native-vector-icons/Feather'
 import Fontisto from 'react-native-vector-icons/Fontisto'
-import { Snackbar } from 'react-native-paper';
-import { useTheme } from 'react-native-paper';
-import CheckBox from '@react-native-community/checkbox';
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import { Snackbar } from 'react-native-paper'
+import { useTheme } from 'react-native-paper'
+import CheckBox from '@react-native-community/checkbox'
 import styles from './styles'
-import { connect } from 'react-redux';
-import { checkLogin } from '../../actionCreator/login/actions';
+import { connect } from 'react-redux'
 import { AuthContext } from '../../components/context'
-import axios from "../../apiConfig";
+import axios from "../../apiConfig"
 import { getAccessToken, getUser } from '../../utils/api'
 import ActivityIndicator from 'react-native-loading-spinner-overlay'
-import { isEmpty } from '../../utils/validation';
+import { isEmpty } from '../../utils/validation'
+import {userDetailsAction} from '../../actionCreator/userDetailsAction'
 
-const LoginScreen = ({ navigation, checkLogin, currentUser }) => {
+const LoginScreen = ({ navigation, currentUser,dispatch }) => {
     const [data, setData] = React.useState({
         userName: '',
         password: '',
@@ -36,7 +37,8 @@ const LoginScreen = ({ navigation, checkLogin, currentUser }) => {
     const onDismissSnackBar = () => setVisible(false);
 
 
-    React.useEffect(() => {
+    React.useEffect(() => {  
+        
         getAccessToken().then((value) => setUserToken(value));
         getPlan()
 
@@ -124,11 +126,11 @@ const LoginScreen = ({ navigation, checkLogin, currentUser }) => {
             username: data.userName.toString(),
             password: data.password.toString()
         })
-            .then(function (response) {
+            .then(function (response) {                
                 getCustomer(response.data)
-
             })
             .catch(function (error) {
+                console.log(error.response)
                 Alert.alert('Invalid User!', 'Username or password is incorrect.', [
                     { text: 'Okay' }
                 ]);
@@ -148,6 +150,7 @@ const LoginScreen = ({ navigation, checkLogin, currentUser }) => {
             {
                 headers: { 'Content-type': 'application/json', 'authorization': authToken }
             }).then(function (response) {
+                console.log("customer=>",response.data);
                 const userInfo = [{
                     id: response.data.id,
                     email: response.data.email,
@@ -163,30 +166,31 @@ const LoginScreen = ({ navigation, checkLogin, currentUser }) => {
                     default_shipping_id: response.data.default_shipping,
                     plan_id: getPlanId(response.data.custom_attributes)
                 }]
-                console.log(userInfo)
-
+                console.log('userInfo',userInfo)
+                dispatch(userDetailsAction(userInfo));    
                 signIn(userInfo);
                 setLoader(false);
 
             }).catch(function (error) {
-                console.log(error)
+                console.log(error.response)
             });
     }
 
     const getPlanId = (planAtr) => {
-        const planValue = planAtr[0].value;
-        const planid = planData.filter((item) => {
+       
+        const planValue = Number(planAtr[0].value).toFixed(2).toString();
+        const planid = planData.filter((item) => {           
             if (item.plan_price == planValue) {
                 return item.plan_id
             }
         })
-        
-        return planid[0].plan_id
+        return (planid.length>0)?planid[0].plan_id:"1"
     }
 
     return (
 
         <View style={styles.container}>
+            <View style={{justifyContent:'space-around',marginLeft:10,marginTop:10}}><Ionicons name="arrow-back" style={{color:'#4359F7',fontSize:30}} onPress={()=>navigation.goBack()}/></View>
             <View>
                 <Text style={styles.text_header}>Sign In</Text>
             </View>
@@ -327,14 +331,4 @@ const LoginScreen = ({ navigation, checkLogin, currentUser }) => {
 
 }
 
-//Map the redux state to your props.
-const mapStateToProps = state => ({
-    currentUser: state.currentUser,
-})
-
-//Map your action creators to your props.
-const mapDispatchToProps = {
-    checkLogin,
-}
-
-export default LoginScreen;
+export default connect()(LoginScreen);

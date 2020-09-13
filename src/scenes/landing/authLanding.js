@@ -14,8 +14,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import styles from './style'
 const fontFamily = Platform.OS === 'ios' ? 'Arial-BoldMT' : 'sans-serif-medium';
 
-const AuthLanding = ({ navigation }) => {
-    const [userToken, setUserToken] = React.useState(null);
+const AuthLanding = ({ navigation }) => {   
     
     return (
 
@@ -37,7 +36,7 @@ const AuthLanding = ({ navigation }) => {
                             style={styles.stretch}
                         />
                         <Text style={styles.title}>The Future Of Referral Marketing</Text>
-                        {/* <Text style={styles.title}>{userToken}</Text> */}
+                        
                     </View>
                     <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 50, }}>
                         <CustomButton

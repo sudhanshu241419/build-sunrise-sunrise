@@ -163,16 +163,16 @@ const addBusiness = ({navigation}) => {
 
 const slectePhoto =()=>{
     ImagePicker.showImagePicker(options, (response) => {
-        console.log('Response = ', response);       
+        // else if(response.fileSize > 50000){
+        //     alert("Logo size should be less than 50KB");
+        //     return false
+        // }       
       
         if (response.didCancel) {
           console.log('User cancelled image picker');
         } else if (response.error) {
           console.log('ImagePicker Error: ', response.error);
-        } else if(response.fileSize > 50000){
-            alert("Logo size should be less than 50KB");
-            return false
-        }else if(response.type=="image/jpg" || response.type=="image/jpeg" || response.type=="image/png" || response.type=="image/gif") {
+        } else if(response.type=="image/jpg" || response.type=="image/jpeg" || response.type=="image/png" || response.type=="image/gif") {
           const source = { uri: response.uri };
           
           const base64Uri = JSON.stringify({

@@ -9,7 +9,7 @@ import styles from './styles'
 import MoneyCardComponent from '../../components/account-detail/money/card';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import CustomButton from '../../components/custom-button';
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
 import { getAccessToken, getUser } from '../../utils/api'
 
 const DashboardScreen = (props) => {
@@ -103,4 +103,4 @@ const DashboardScreen = (props) => {
     )
 }
 
-export default connect()(DashboardScreen);
+export default DashboardScreen;
